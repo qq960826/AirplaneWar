@@ -1,0 +1,72 @@
+{
+"id":1,
+"hp":20,
+"attack":1,
+"pictureid":5,
+"bullet_set":
+	{
+	"id":1,
+	"num_set":2,
+	"bullet":
+		[
+			{
+				"num_each": 2,
+				"bullet_property": [
+					{
+						"id": 1,
+						"pictureid": 1,
+						"attack": 3,
+						"offset": [
+							0,
+							0
+						],
+						"rotation": 180,
+						"speed": 10,
+						"scale": 1
+					},
+					{
+						"id": 1,
+						"pictureid": 1,
+						"attack": 3,
+						"offset": [
+							0,
+							0
+						],
+						"rotation": 180,
+						"speed": 10,
+						"scale": 1
+					}
+				]
+			},
+			{
+				"num_each": 2,
+				"bullet_property": [
+					{
+						"id": 1,
+						"pictureid": 1,
+						"attack": 3,
+						"offset": [
+							0,
+							0
+						],
+						"rotation": 180,
+						"speed": 10,
+						"scale": 1
+					},
+					{
+						"id": 1,
+						"pictureid": 1,
+						"attack": 3,
+						"offset": [
+							0,
+							0
+						],
+						"rotation": 180,
+						"speed": 10,
+						"scale": 1
+					}
+				]
+			}
+		]
+	}
+}
