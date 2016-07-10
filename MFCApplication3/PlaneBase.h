@@ -6,7 +6,7 @@ struct bullet_property {
 	int id;
 	int pictureid;
 	int attack;
-	CPoint offset;
+	CPoint *offset;
 	float rotation;
 	int speed;
 	float scale;

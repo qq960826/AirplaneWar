@@ -348,39 +348,169 @@ void CMFCApplication3View::InitalizeAirplane() {
 
 
 
-	int plane_size = 10;
-	pDoc->mplane_property = (struct plane_property**) malloc(plane_size*sizeof(plane_property**));//为所有的飞机分配内存
-
-	struct plane_property* temp_plane= (struct plane_property*) malloc(plane_size*sizeof(plane_property));
-	//pDoc->mplane_property[0]= (struct plane_property*) malloc(sizeof(plane_property*));
+	
 //	Json::Reader a;
 	using json = nlohmann::json;
-	json a;
-	json j2 = R"(
-  {
-    "happy": true,
-    "pi": 3.141
-  }
+	//json a;
+	json json_fromfile = R"([
+	{
+	"id":1,
+	"hp":20,
+	"attack":2,
+	"pictureid":5,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":2,
+		"bullet":
+			[
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						},
+						{
+							"id": 2,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				},
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 3,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						},
+						{
+							"id": 4,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	}
+]
 )"_json;
-	temp_plane->mbullet_set = (struct bullet_set*) malloc(sizeof(bullet_set));
 
-	int num_set=1;
-	temp_plane->mbullet_set->num_set = 1;
-	temp_plane->mbullet_set->bullet= (struct bullet_property***) malloc(sizeof(bullet_property**)*num_set);
-	int num_each = 1;
-	temp_plane->mbullet_set->bullet[0]= (struct bullet_property**) malloc(sizeof(bullet_property*)*num_each);
-	temp_plane->mbullet_set->bullet[0][0] = (struct bullet_property*) malloc(sizeof(bullet_property));
-	temp_plane->mbullet_set->bullet[0][0]->attack = 2;
-	temp_plane->mbullet_set->bullet[0][0]->pictureid = 12;
-	temp_plane->mbullet_set->bullet[0][0]->offset =CPoint(0, 0);
-	temp_plane->mbullet_set->bullet[0][0]->rotation = 0.0f;
-	temp_plane->mbullet_set->bullet[0][0]->scale = 1;
-	temp_plane->mbullet_set->bullet[0][0]->speed = 10;
+	pDoc->mplane_property = (struct plane_property**) malloc(json_fromfile.size()*sizeof(plane_property**));//为所有的飞机分配内存
+	for (int i = 0; i < json_fromfile.size(); i++) {//traverse all the plane
 
-	temp_plane->attack = 2;
-	temp_plane->hp = 10;
-	temp_plane->pictureid = 12;
-	pDoc->mplane_property[0] = temp_plane;
+		//configure plane
+		struct plane_property* temp_plane = (struct plane_property*) malloc(sizeof(plane_property));
+		temp_plane->id= json_fromfile[i]["id"];
+		temp_plane->hp = json_fromfile[i]["hp"];
+		temp_plane->attack = json_fromfile[i]["attack"];
+		temp_plane->pictureid = json_fromfile[i]["pictureid"];
+
+		//configure bulletset
+		json json_bullet_set_all = json_fromfile[i]["bullet_set"];
+		temp_plane->mbullet_set = (struct bullet_set*) malloc(sizeof(bullet_set));
+		temp_plane->mbullet_set->id = json_bullet_set_all["id"];
+		auto json_bullet_set_bullet = json_bullet_set_all["bullet"];
+		temp_plane->mbullet_set->num_set = json_bullet_set_bullet.size();
+		temp_plane->mbullet_set->bullet = (struct bullet_property***) malloc(sizeof(bullet_property**)*json_bullet_set_bullet.size());
+		
+		//configure bullet property
+		
+
+		for (int j = 0; j < json_bullet_set_all.size(); j++) {//traverse single set
+			json json_bullet_set_each = json_bullet_set_bullet[j];
+			temp_plane->mbullet_set->bullet[j] = (struct bullet_property**) malloc(sizeof(bullet_property*)*json_bullet_set_each.size());
+			temp_plane->mbullet_set->num_each = (int*) malloc(sizeof(int)*json_bullet_set_each.size());;
+
+			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each.size();
+			//auto a = json_bullet_set_each.dump();
+			//
+			for (int k = 0; k < json_bullet_set_each.size(); k++) {//traverse the element in the single set
+				json json_bullet_each = json_bullet_set_each["bullet_property"][k];
+				auto a = json_bullet_each.dump();
+				int l = json_bullet_each.size();
+				
+				temp_plane->mbullet_set->bullet[j][k] = (struct bullet_property*) malloc(sizeof(bullet_property));
+				temp_plane->mbullet_set->bullet[j][k]->id= json_bullet_each["id"];
+				temp_plane->mbullet_set->bullet[j][k]->attack = json_bullet_each["attack"];
+				temp_plane->mbullet_set->bullet[j][k]->pictureid = json_bullet_each["pictureid"];
+				temp_plane->mbullet_set->bullet[j][k]->rotation = json_bullet_each["rotation"];
+				temp_plane->mbullet_set->bullet[j][k]->scale = json_bullet_each["scale"];
+				temp_plane->mbullet_set->bullet[j][k]->speed = json_bullet_each["speed"];
+				temp_plane->mbullet_set->bullet[j][k]->offset = new CPoint(json_bullet_each["offset"][0], json_bullet_each["offset"][1]);
+				
+			}
+			//mp_plane->mbullet_set->bullet[j]
+		
+		}
+		pDoc->mplane_property[i] = temp_plane;
+
+
+
+		
+	
+	}
+
+
+	//int b = j2[0]["attack"];
+	//int c = j2.size();
+
+	int plane_size = 10;
+	
+
+	
+	//pDoc->mplane_property[0]= (struct plane_property*) malloc(sizeof(plane_property*));
+	
+
+	//int num_set=1;
+	//temp_plane->mbullet_set->num_set = 1;
+	////temp_plane->mbullet_set->bullet= (struct bullet_property***) malloc(sizeof(bullet_property**)*num_set);
+	//int num_each = 1;
+	//temp_plane->mbullet_set->bullet[0]= (struct bullet_property**) malloc(sizeof(bullet_property*)*num_each);
+	//temp_plane->mbullet_set->bullet[0][0] = (struct bullet_property*) malloc(sizeof(bullet_property));
+	//temp_plane->mbullet_set->bullet[0][0]->attack = 2;
+	//temp_plane->mbullet_set->bullet[0][0]->pictureid = 12;
+	//temp_plane->mbullet_set->bullet[0][0]->offset =CPoint(0, 0);
+	//temp_plane->mbullet_set->bullet[0][0]->rotation = 0.0f;
+	//temp_plane->mbullet_set->bullet[0][0]->scale = 1;
+	//temp_plane->mbullet_set->bullet[0][0]->speed = 10;
+
+	//temp_plane->attack = 2;
+	//temp_plane->hp = 10;
+	//temp_plane->pictureid = 12;
+	//pDoc->mplane_property[0] = temp_plane;
 
 
 
