@@ -1,20 +1,22 @@
 #pragma once
 #include "stdafx.h"
 #include "FlyingObject.h"
-
+#include "PlaneBase.h"
 class BulletGeneral:public FlyingObject {
 protected:
-	int type=0;
-	float angle;
 	
 public:
-	int attack;
-	BulletGeneral(CPoint mpos,CPoint mvelocity ,int mtype,int mattack):FlyingObject(mpos,mvelocity),type(mtype), attack(mattack){
-		
+	//int attack;
+	bullet_property *property;
+	BulletGeneral(CPoint mpos,CPoint mvelocity ,bullet_property *mproperty):FlyingObject(mpos,mvelocity), property(mproperty){
+
+
 	};
 	void loadAnimation(Animation *a);
 	void Draw(CDC *pDoc);
-	void rotate(float a) { angle = a; };
+	void rotate(float a) { 
+		property->rotation = a;
+	};
 	void Onedgeleft() {
 
 
@@ -28,13 +30,10 @@ public:
 		finished = 1;
 	};
 	CRect getlocation() {
-		objectsize.x = mAnimation->slice_picture[type][0].right;
-		objectsize.y = mAnimation->slice_picture[type][0].bottom;
+
 		return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
 	};
-	void settype(int a) {
-		type = a;
-		objectsize.x = mAnimation->slice_picture[type][0].right;
-		objectsize.y = mAnimation->slice_picture[type][0].bottom;
+	void setpictureid(int a) {
+		property->pictureid = a;
 	}
 };

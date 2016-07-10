@@ -4,7 +4,28 @@
 #include "atltypes.h"
 #include "Animation.h"
 #include "MFCApplication3Doc.h"
-
+struct bullet_property {
+	int id;
+	int pictureid;
+	int attack;
+	CPoint *offset;
+	float rotation;
+	int speed;
+	float scale;
+};
+struct bullet_set {
+	int id;
+	int num_set;
+	int *num_each;
+	bullet_property ***bullet;
+};
+struct plane_property {
+	int id;
+	int hp;
+	int attack;
+	int pictureid;
+	bullet_set *mbullet_set;
+};
 class FlyingObject {
 private:
 	int touchthreshold;

@@ -19,19 +19,24 @@ void PlaneBase::draw(CDC *pDC){
 
 };
 
-void PlaneBase::fire(CObList *bullet) {
-	BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, -10), 0, 5);
-	int b[] = { 629,531,36,85 };
-	mbullet->mAnimation = pDoc->manimation_bullet;
-	mbullet->windowsize = pDoc->windowssize;
-	//mbullet->mAnimation->addimage(pDoc->image_bullet_general, b, 5);
-	mbullet->setattack(5);
-	mbullet->settype(12);
-	bullet->AddHead((CObject*)mbullet);
+void PlaneBase::fire(CObList *bullet,int id) {
+	//BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, -10), 0, 5);
+
+	//for (int i = 0; i < *mproperty->mbullet_set[id].num_each; i++) {
+	//	mbullet->mAnimation = pDoc->manimation_bullet;
+	//	mbullet->windowsize = pDoc->windowssize;
+	//	//mbullet->mAnimation->addimage(pDoc->image_bullet_general, b, 5);
+	//	mbullet->setattack(5);
+	//	//mbullet->settype(12);
+	//	bullet->AddHead((CObject*)mbullet);
+	//
+	//}
+
+
 };
 CRect PlaneBase::getlocation() {
-	objectsize.x = mAnimation->slice_picture[0][shape].right;
-	objectsize.y = mAnimation->slice_picture[0][shape].bottom;
+	//objectsize.x = mAnimation->slice_picture[0][shape].right;
+	//objectsize.y = mAnimation->slice_picture[0][shape].bottom;
 	return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
 };
 bool PlaneBase::isCollsion(CRect a) {

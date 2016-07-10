@@ -10,7 +10,9 @@
 #include "Explosion.h"
 //#pragma comment( lib, "json.lib" )
 #include "json.hpp"
-
+#include <string>
+#include <fstream>
+#include <streambuf>
 #pragma once
 using namespace Gdiplus;
 

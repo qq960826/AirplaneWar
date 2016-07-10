@@ -138,8 +138,9 @@ void CMFCApplication3View::OnInitialUpdate() {
 
 
 	plane_self.mAnimation = pDoc->manimation_airplane_self;
+	plane_self.mproperty = pDoc->mplane_property[0];
 	plane_self.setDoc(pDoc);
-	plane_self.shape = 2;
+//	plane_self.shape = 2;
 	plane_self.level = 2;
 	plane_self.setattack(1);
 
@@ -306,14 +307,15 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		PlaneEmenyGeneral *temp;
 		temp = new PlaneEmenyGeneral();
 		temp->setAnimation(pDoc->manimation_enemy);
-		temp->shape = 0;
+		temp->mproperty = pDoc->mplane_property[0];
+//		temp->shape = 0;
 		temp->setDoc(pDoc);
 		temp->windowsize = pDoc->windowssize;
 		temp->setvelocity(CPoint(0, 0));
 		temp->setacceleration(CPoint(0, 0));
 		temp->setpos(CPoint(150, 150));
-		temp->setHP(10);
-		temp->setAttack(1);
+		//temp->setHP(10);
+		//temp->setAttack(1);
 
 		pDoc->list_airplane_enemy.AddTail((CObject*)temp);
 
@@ -329,7 +331,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		}
 	PlaneEmenyGeneral *temp_airplane_enemy = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetHead();
 		if (!temp_airplane_enemy) return;
-		temp_airplane_enemy->fire(&pDoc->list_bullet_general_enemy);
+		temp_airplane_enemy->fire(&pDoc->list_bullet_general_enemy,0);
 
 		break;
 	};
@@ -343,90 +345,18 @@ void CMFCApplication3View::InitalizeAirplane() {
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
-//	Json::Reader a;
-
-
-
-	
-//	Json::Reader a;
 	using json = nlohmann::json;
-	//json a;
-	json json_fromfile = R"([
-	{
-	"id":1,
-	"hp":20,
-	"attack":2,
-	"pictureid":5,
-	"bullet_set":
-		{
-		"id":1,
-		"num_set":2,
-		"bullet":
-			[
-				{
-					"num_each": 2,
-					"bullet_property": [
-						{
-							"id": 1,
-							"pictureid": 1,
-							"attack": 3,
-							"offset": [
-								0,
-								0
-							],
-							"rotation": 180,
-							"speed": 10,
-							"scale": 1
-						},
-						{
-							"id": 2,
-							"pictureid": 1,
-							"attack": 3,
-							"offset": [
-								0,
-								0
-							],
-							"rotation": 180,
-							"speed": 10,
-							"scale": 1
-						}
-					]
-				},
-				{
-					"num_each": 2,
-					"bullet_property": [
-						{
-							"id": 3,
-							"pictureid": 1,
-							"attack": 3,
-							"offset": [
-								0,
-								0
-							],
-							"rotation": 180,
-							"speed": 10,
-							"scale": 1
-						},
-						{
-							"id": 4,
-							"pictureid": 1,
-							"attack": 3,
-							"offset": [
-								0,
-								0
-							],
-							"rotation": 180,
-							"speed": 10,
-							"scale": 1
-						}
-					]
-				}
-			]
-		}
+
+	CStdioFile f1(GetModuleDir() +L"\\config.json", CFile::typeText);
+	CString all =L"";
+	CString test;
+	while (f1.ReadString(test)) {
+		all += test;
 	}
-]
-)"_json;
+
+	CT2CA pszConvertedAnsiString(all);
+	std::string strStd(pszConvertedAnsiString);
+	json json_fromfile= json::parse(strStd);
 
 	pDoc->mplane_property = (struct plane_property**) malloc(json_fromfile.size()*sizeof(plane_property**));//为所有的飞机分配内存
 	for (int i = 0; i < json_fromfile.size(); i++) {//traverse all the plane
@@ -452,7 +382,8 @@ void CMFCApplication3View::InitalizeAirplane() {
 		for (int j = 0; j < json_bullet_set_all.size(); j++) {//traverse single set
 			json json_bullet_set_each = json_bullet_set_bullet[j];
 			temp_plane->mbullet_set->bullet[j] = (struct bullet_property**) malloc(sizeof(bullet_property*)*json_bullet_set_each.size());
-			temp_plane->mbullet_set->num_each = (int*) malloc(sizeof(int)*json_bullet_set_each.size());;
+			if(!j)temp_plane->mbullet_set->num_each = (int*)malloc(sizeof(int)*json_bullet_set_each.size());
+			
 
 			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each.size();
 			//auto a = json_bullet_set_each.dump();
@@ -488,40 +419,6 @@ void CMFCApplication3View::InitalizeAirplane() {
 	//int c = j2.size();
 
 	int plane_size = 10;
-	
-
-	
-	//pDoc->mplane_property[0]= (struct plane_property*) malloc(sizeof(plane_property*));
-	
-
-	//int num_set=1;
-	//temp_plane->mbullet_set->num_set = 1;
-	////temp_plane->mbullet_set->bullet= (struct bullet_property***) malloc(sizeof(bullet_property**)*num_set);
-	//int num_each = 1;
-	//temp_plane->mbullet_set->bullet[0]= (struct bullet_property**) malloc(sizeof(bullet_property*)*num_each);
-	//temp_plane->mbullet_set->bullet[0][0] = (struct bullet_property*) malloc(sizeof(bullet_property));
-	//temp_plane->mbullet_set->bullet[0][0]->attack = 2;
-	//temp_plane->mbullet_set->bullet[0][0]->pictureid = 12;
-	//temp_plane->mbullet_set->bullet[0][0]->offset =CPoint(0, 0);
-	//temp_plane->mbullet_set->bullet[0][0]->rotation = 0.0f;
-	//temp_plane->mbullet_set->bullet[0][0]->scale = 1;
-	//temp_plane->mbullet_set->bullet[0][0]->speed = 10;
-
-	//temp_plane->attack = 2;
-	//temp_plane->hp = 10;
-	//temp_plane->pictureid = 12;
-	//pDoc->mplane_property[0] = temp_plane;
-
-
-
-//	free(temp_plane->mbullet_set->bullet[0][0]);
-	//free(temp_plane->mbullet_set->bullet[0]);
-	//free(temp_plane->mbullet_set->bullet);
-	//free(temp_plane);
-	//free(pDoc->mplane_property);
-	//temp_plane->mbullet_set->bullet[0]->
-
-	
 	
 
 
@@ -571,10 +468,19 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 
 	//load enemy airplane
-	pDoc->manimation_enemy = new Animation(2);
-	temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy.png");
-	int temp3 [] = { 162,475,102,73 };
-	pDoc->manimation_enemy->addimage(temp, temp3, 1);
+	pDoc->manimation_enemy = new Animation(19);
+	for (int i = 1; i <= 19; i++) {
+		a.Format(_T("%d"), i);
+		temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy\\img_plane_enemy" + a + ".png");
+		pDoc->manimation_enemy->addimage(temp);
+
+	}
+
+	//pDoc->manimation_enemy = new Animation(2);
+	//temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy.png");
+	//int temp3 [] = { 162,475,102,73 };
+	//pDoc->manimation_enemy->addimage(temp, temp3, 1);
+
 
 
 	//load explosion
@@ -636,7 +542,7 @@ void CMFCApplication3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nChar) {
 	case VK_SPACE:
-		plane_self.fire(&pDoc->list_bullet_general_self);
+		plane_self.fire(&pDoc->list_bullet_general_self,1);
 		break;
 	case VK_LEFT:
 		plane_self.velocity.x = -10;

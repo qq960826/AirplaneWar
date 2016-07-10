@@ -6,7 +6,7 @@ PlaneEmenyGeneral::PlaneEmenyGeneral() :PlaneBase() {
 };
 void PlaneEmenyGeneral:: Draw(CDC *pDC) {
 	this->calculate_location();
-	mAnimation->drawimage(pDC, this->pos, 0, shape);
+	mAnimation->drawimage(pDC, this->pos, mproperty->pictureid,0);
 
 
 };
@@ -26,11 +26,17 @@ void PlaneEmenyGeneral::Onedgeright() {
 void PlaneEmenyGeneral::Onedgebottom() {
 
 };
-void PlaneEmenyGeneral::fire(CObList *bullet) {
-	BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, 20), 0, 5);
+void PlaneEmenyGeneral::fire(CObList *bullet,int id) {
+	int num = mproperty->mbullet_set->num_each[id];
+	for (int i = 0; i < num; i++) {
+		BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, 20), mproperty->mbullet_set->bullet[id][i]);
+		mbullet->windowsize = pDoc->windowssize;
+		mbullet->loadAnimation(pDoc->manimation_bullet);
+		bullet->AddHead((CObject*)mbullet);
+	}
+	
 
-	mbullet->windowsize = pDoc->windowssize;
-	mbullet->loadAnimation(pDoc->manimation_bullet);
-	mbullet->setrotation(180);
-	bullet->AddHead((CObject*)mbullet);
+
+	//mbullet->setrotation(180);
+	
 };

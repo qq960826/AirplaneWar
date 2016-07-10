@@ -222,6 +222,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FlyingObject.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MFCApplication3.h" />
     <ClInclude Include="MFCApplication3Doc.h" />

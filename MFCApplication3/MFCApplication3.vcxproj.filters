@@ -75,6 +75,9 @@
     <ClInclude Include="Explosion.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
+    <ClInclude Include="json.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication3.cpp">

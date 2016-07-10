@@ -2,6 +2,7 @@
 #include "PlaneBase.h"
 class PlaneEmenyGeneral:public PlaneBase {
 public:
+
 	PlaneEmenyGeneral();
 	void setAttack(int) ;
 	void setHP(int);
@@ -10,7 +11,7 @@ public:
 	void Onedgetop() ;
 	void Onedgeright();
 	void Onedgebottom();
-	void fire(CObList *bullet);
+	void fire(CObList *bullet,int id);
 
 
 };
