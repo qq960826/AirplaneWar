@@ -4,6 +4,7 @@
 #include "atltypes.h"
 #include "Animation.h"
 #include "MFCApplication3Doc.h"
+#define pi 3.1415926
 struct bullet_property {
 	int id;
 	int pictureid;
@@ -54,10 +55,10 @@ public:
 	FlyingObject() :pos(0, 0), velocity(0, 0), acceleration(0, 0) {};
 	FlyingObject(CPoint a, CPoint b, Animation*c) :pos(a), velocity(b), mAnimation(c){};
 	FlyingObject(CPoint a, CPoint b) :pos(a), velocity(b) {};
+	FlyingObject(CPoint a) :pos(a) {};
 	void draw(CDC *);
 	void setpos(CPoint a);
 	void setvelocity(CPoint a);
-	void setobjectsize(CPoint a);
 	void setDoc(CMFCApplication3Doc* a) ;
 	void setacceleration(CPoint a) ;
 	boolean isCollsionWithPoint( CRect *b);

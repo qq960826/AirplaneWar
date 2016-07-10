@@ -137,12 +137,10 @@ void CMFCApplication3View::OnInitialUpdate() {
 	pDoc->mBackground->init(1);
 
 
-	plane_self.mAnimation = pDoc->manimation_airplane_self;
-	plane_self.mproperty = pDoc->mplane_property[0];
+	plane_self.mAnimation = pDoc->manimation_enemy;
+	plane_self.setproperty(pDoc->mplane_property[1]);
 	plane_self.setDoc(pDoc);
-//	plane_self.shape = 2;
 	plane_self.level = 2;
-	plane_self.setattack(1);
 
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(2, 2000, NULL);//generateenemy
@@ -203,6 +201,8 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			POSITION del = pos;
 			BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_enemy.GetNext(pos);
 			CRect temp_rect =CRect( temp->getlocation());
+			temp_rect.bottom *= temp->property->scale;
+			temp_rect.right *= temp->property->scale;
 			//temp_rect.top += temp_rect.bottom;
 			//temp_rect.left += temp_rect.right / 2;
 			if (plane_self.isCollsion(temp_rect)) {
@@ -303,14 +303,12 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		DC.BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
 		break;
 	case 2://generate the airplane of enemy
-		if (pDoc->list_airplane_enemy.GetCount() > 1)return;
+		if (pDoc->list_airplane_enemy.GetCount() > 0)return;
 		PlaneEmenyGeneral *temp;
 		temp = new PlaneEmenyGeneral();
 		temp->setAnimation(pDoc->manimation_enemy);
-		temp->mproperty = pDoc->mplane_property[0];
-//		temp->shape = 0;
+		temp->setproperty(pDoc->mplane_property[0]);
 		temp->setDoc(pDoc);
-		temp->windowsize = pDoc->windowssize;
 		temp->setvelocity(CPoint(0, 0));
 		temp->setacceleration(CPoint(0, 0));
 		temp->setpos(CPoint(150, 150));
@@ -357,6 +355,7 @@ void CMFCApplication3View::InitalizeAirplane() {
 	CT2CA pszConvertedAnsiString(all);
 	std::string strStd(pszConvertedAnsiString);
 	json json_fromfile= json::parse(strStd);
+	f1.Close();
 
 	pDoc->mplane_property = (struct plane_property**) malloc(json_fromfile.size()*sizeof(plane_property**));//为所有的飞机分配内存
 	for (int i = 0; i < json_fromfile.size(); i++) {//traverse all the plane
@@ -381,18 +380,13 @@ void CMFCApplication3View::InitalizeAirplane() {
 
 		for (int j = 0; j < json_bullet_set_all.size(); j++) {//traverse single set
 			json json_bullet_set_each = json_bullet_set_bullet[j];
-			temp_plane->mbullet_set->bullet[j] = (struct bullet_property**) malloc(sizeof(bullet_property*)*json_bullet_set_each.size());
-			if(!j)temp_plane->mbullet_set->num_each = (int*)malloc(sizeof(int)*json_bullet_set_each.size());
-			
+			temp_plane->mbullet_set->bullet[j] = (struct bullet_property**) malloc(sizeof(bullet_property*)*json_bullet_set_each["bullet_property"].size());
+			if(!j)temp_plane->mbullet_set->num_each = (int*)malloc(sizeof(int)*json_bullet_set_each["bullet_property"].size());
 
-			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each.size();
-			//auto a = json_bullet_set_each.dump();
-			//
-			for (int k = 0; k < json_bullet_set_each.size(); k++) {//traverse the element in the single set
+			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each["bullet_property"].size();
+			for (int k = 0; k < json_bullet_set_each["bullet_property"].size(); k++) {//traverse the element in the single set
 				json json_bullet_each = json_bullet_set_each["bullet_property"][k];
-				auto a = json_bullet_each.dump();
-				int l = json_bullet_each.size();
-				
+
 				temp_plane->mbullet_set->bullet[j][k] = (struct bullet_property*) malloc(sizeof(bullet_property));
 				temp_plane->mbullet_set->bullet[j][k]->id= json_bullet_each["id"];
 				temp_plane->mbullet_set->bullet[j][k]->attack = json_bullet_each["attack"];
@@ -407,20 +401,8 @@ void CMFCApplication3View::InitalizeAirplane() {
 		
 		}
 		pDoc->mplane_property[i] = temp_plane;
-
-
-
-		
 	
 	}
-
-
-	//int b = j2[0]["attack"];
-	//int c = j2.size();
-
-	int plane_size = 10;
-	
-
 
 }
 
@@ -468,8 +450,8 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 
 	//load enemy airplane
-	pDoc->manimation_enemy = new Animation(19);
-	for (int i = 1; i <= 19; i++) {
+	pDoc->manimation_enemy = new Animation(23);
+	for (int i = 1; i <= 23; i++) {
 		a.Format(_T("%d"), i);
 		temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy\\img_plane_enemy" + a + ".png");
 		pDoc->manimation_enemy->addimage(temp);
@@ -501,7 +483,6 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 	pDoc->manimation_animation->addimage(temp, temp4, 8);
 	int temp5[] = {
-
 		415,405,92,92,//general airplane explode
 		706,262,128,128,
 		719,2,128,128,
@@ -510,7 +491,6 @@ void CMFCApplication3View::LoadImageFromFile() {
 		589,2,128,128,
 		576,132,128,128,
 		723,392,40,40
-
 
 	};
 	pDoc->manimation_animation->addimage(temp, temp5, 8);
@@ -542,7 +522,7 @@ void CMFCApplication3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nChar) {
 	case VK_SPACE:
-		plane_self.fire(&pDoc->list_bullet_general_self,1);
+		plane_self.fire(&pDoc->list_bullet_general_self,0);
 		break;
 	case VK_LEFT:
 		plane_self.velocity.x = -10;

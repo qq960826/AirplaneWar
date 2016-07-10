@@ -1,0 +1,116 @@
+[
+	{
+	"id":0,
+	"hp":100,
+	"attack":5,
+	"pictureid":21,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 2,
+							"pictureid": 13,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	
+	{
+	"id":1,
+	"hp":250,
+	"attack":10,
+	"pictureid":22,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								50,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 0.5
+						}
+					]
+				},
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 3,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						},
+						{
+							"id": 4,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+]

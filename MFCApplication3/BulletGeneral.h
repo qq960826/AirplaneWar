@@ -12,6 +12,14 @@ public:
 
 
 	};
+	BulletGeneral(CPoint mpos, bullet_property *mproperty) :FlyingObject(mpos), property(mproperty) {
+		CPoint temp_velocity;
+		temp_velocity.x = -mproperty->speed*sin((mproperty->rotation*pi) / 180);
+		temp_velocity.y = mproperty->speed*cos((mproperty->rotation*pi) / 180);
+		velocity = temp_velocity;
+
+
+	};
 	void loadAnimation(Animation *a);
 	void Draw(CDC *pDoc);
 	void rotate(float a) { 
@@ -27,7 +35,8 @@ public:
 	
 	};
 	void Onedgebottom() {
-		finished = 1;
+		if(pos.y>objectsize.y+windowsize->y)finished = 1;
+		
 	};
 	CRect getlocation() {
 

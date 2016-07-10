@@ -20,9 +20,6 @@ void PlaneSelf::Onedgebottom() {
 };
 
 void PlaneSelf::draw(CDC *pDC) {
-	//objectsize.x = mAnimation->slice_picture[0][mproperty->pictureid].right;
-	//objectsize.y = mAnimation->slice_picture[0][mproperty->pictureid].bottom;
-	objectsize = CPoint(mAnimation->slice_picture[0][mproperty->pictureid].right, mAnimation->slice_picture[0][mproperty->pictureid].bottom);
 	this->calculate_location();
-	mAnimation->drawimage(pDC, this->pos, 0, mproperty->pictureid);
+	mAnimation->drawimage(pDC, this->pos, mproperty->pictureid,0);
 };

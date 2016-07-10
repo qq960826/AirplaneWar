@@ -1,32 +1,96 @@
 [
 	{
-	"id":1,
-	"hp":20,
-	"attack":1,
-	"pictureid":5,
+	"id":0,
+	"hp":100,
+	"attack":5,
+	"pictureid":1,
 	"bullet_set":
 		{
 		"id":1,
-		"num_set":2,
+		"num_set":1,
 		"bullet":
 			[
 				{
-					"num_each": 2,
+					"num_each": 1,
 					"bullet_property": [
 						{
-							"id": 1,
-							"pictureid": 1,
+							"id": 2,
+							"pictureid": 13,
 							"attack": 3,
 							"offset": [
-								50,
+								0,
 								0
 							],
 							"rotation": 180,
 							"speed": 10,
 							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	
+	{
+	"id":1,
+	"hp":200,
+	"attack":10,
+	"pictureid":22,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								100,
+								10
+							],
+							"rotation": 30,
+							"speed": -10,
+							"scale": 0.5
 						},
 						{
 							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								50,
+								0
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 330,
+							"speed": -10,
+							"scale": 0.5
+						}
+					]
+				},
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 3,
 							"pictureid": 1,
 							"attack": 3,
 							"offset": [
@@ -36,6 +100,251 @@
 							"rotation": 180,
 							"speed": 10,
 							"scale": 1
+						},
+						{
+							"id": 4,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	{
+	"id":2,
+	"hp":300,
+	"attack":20,
+	"pictureid":22,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								100,
+								10
+							],
+							"rotation": 30,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								50,
+								0
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 330,
+							"speed": -10,
+							"scale": 0.5
+						}
+					]
+				},
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 3,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						},
+						{
+							"id": 4,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	{
+	"id":2,
+	"hp":300,
+	"attack":20,
+	"pictureid":22,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								100,
+								10
+							],
+							"rotation": 30,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								50,
+								0
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 330,
+							"speed": -10,
+							"scale": 0.5
+						}
+					]
+				},
+				{
+					"num_each": 2,
+					"bullet_property": [
+						{
+							"id": 3,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						},
+						{
+							"id": 4,
+							"pictureid": 1,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 180,
+							"speed": 10,
+							"scale": 1
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	
+	
+	
+	{
+	"id":3,
+	"hp":400,
+	"attack":20,
+	"pictureid":22,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 1,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								100,
+								10
+							],
+							"rotation": 30,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								50,
+								0
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 2,
+							"pictureid": 18,
+							"attack": 3,
+							"offset": [
+								0,
+								0
+							],
+							"rotation": 330,
+							"speed": -10,
+							"scale": 0.5
 						}
 					]
 				},
@@ -71,4 +380,5 @@
 			]
 		}
 	}
+	
 ]

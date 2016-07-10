@@ -18,9 +18,7 @@ void  FlyingObject::setpos(CPoint a) {
 void FlyingObject::setvelocity(CPoint a) {
 	velocity = a;
 };
-void  FlyingObject::setobjectsize(CPoint a) {
-	objectsize = a;
-}
+
 void  FlyingObject::setDoc(CMFCApplication3Doc* a) {
 	pDoc = a;
 	windowsize = pDoc->windowssize;

@@ -20,23 +20,19 @@ void PlaneBase::draw(CDC *pDC){
 };
 
 void PlaneBase::fire(CObList *bullet,int id) {
-	//BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, -10), 0, 5);
+	int num = mproperty->mbullet_set->num_each[id];
+	for (int i = 0; i < num; i++) {
+		BulletGeneral *mbullet = new BulletGeneral( pos, mproperty->mbullet_set->bullet[id][i]);
+		mbullet->windowsize = pDoc->windowssize;
+		mbullet->loadAnimation(pDoc->manimation_bullet);
+		bullet->AddHead((CObject*)mbullet);
+	}
 
-	//for (int i = 0; i < *mproperty->mbullet_set[id].num_each; i++) {
-	//	mbullet->mAnimation = pDoc->manimation_bullet;
-	//	mbullet->windowsize = pDoc->windowssize;
-	//	//mbullet->mAnimation->addimage(pDoc->image_bullet_general, b, 5);
-	//	mbullet->setattack(5);
-	//	//mbullet->settype(12);
-	//	bullet->AddHead((CObject*)mbullet);
-	//
-	//}
 
 
 };
 CRect PlaneBase::getlocation() {
-	//objectsize.x = mAnimation->slice_picture[0][shape].right;
-	//objectsize.y = mAnimation->slice_picture[0][shape].bottom;
+
 	return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
 };
 bool PlaneBase::isCollsion(CRect a) {

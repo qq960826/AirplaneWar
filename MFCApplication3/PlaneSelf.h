@@ -2,8 +2,6 @@
 #include "PlaneBase.h"
 #pragma once
 class PlaneSelf :public PlaneBase {
-protected:
-	
 public:
 	int level;
 	PlaneSelf() :PlaneBase() {};

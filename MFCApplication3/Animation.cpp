@@ -5,6 +5,7 @@ Animation::Animation(int num) {
 	slice_picture = new  RECT *[num];
 	slice_num = new int[num];
 	image = new Gdiplus::Image *[num];
+	scale = 1;
 	//image_num = num;
 
 };
@@ -44,15 +45,16 @@ void Animation::drawimage(CDC *pDC, CPoint pos, int image_index, int animation_i
 	graphics.RotateTransform(rotation, Gdiplus::MatrixOrderPrepend);
 	graphics.TranslateTransform(-moveX, -moveY);
 
+	//graphics.ScaleTransform(scale, scale, Gdiplus::MatrixOrderAppend);
 
-
-	//Gdiplus::Pen blackPen(Gdiplus::Color(255, 0, 0, 0), 3);
-	//graphics.DrawRectangle(&blackPen, pos.x, pos.y
-	//	, slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom);
+	Gdiplus::Pen blackPen(Gdiplus::Color(255, 0, 0, 0), 3);
+	/*graphics.DrawRectangle(&blackPen, pos.x, pos.y
+		,(long)( (float)slice_picture[image_index][animation_index].right*scale), (long)((float)slice_picture[image_index][animation_index].bottom*scale));*/
 	Gdiplus::ImageAttributes attrs;
 	//attrs.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
 	graphics.SetPixelOffsetMode(Gdiplus::PixelOffsetModeHalf);
-	Gdiplus::Rect  rect = Gdiplus::Rect(pos.x, pos.y, slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom);
+	
+	Gdiplus::Rect  rect = Gdiplus::Rect(pos.x, pos.y, slice_picture[image_index][animation_index].right*scale, slice_picture[image_index][animation_index].bottom*scale);
 	graphics.DrawImage(image[image_index], rect, slice_picture[image_index][animation_index].left, slice_picture[image_index][animation_index].top
 		, slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom, Gdiplus::UnitPixel,&attrs,NULL,NULL);
 	};

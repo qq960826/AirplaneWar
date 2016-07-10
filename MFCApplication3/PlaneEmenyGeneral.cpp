@@ -29,7 +29,8 @@ void PlaneEmenyGeneral::Onedgebottom() {
 void PlaneEmenyGeneral::fire(CObList *bullet,int id) {
 	int num = mproperty->mbullet_set->num_each[id];
 	for (int i = 0; i < num; i++) {
-		BulletGeneral *mbullet = new BulletGeneral(pos, CPoint(0, 20), mproperty->mbullet_set->bullet[id][i]);
+		
+		BulletGeneral *mbullet = new BulletGeneral(pos, mproperty->mbullet_set->bullet[id][i]);
 		mbullet->windowsize = pDoc->windowssize;
 		mbullet->loadAnimation(pDoc->manimation_bullet);
 		bullet->AddHead((CObject*)mbullet);
