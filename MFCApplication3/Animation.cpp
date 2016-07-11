@@ -39,8 +39,8 @@ void Animation::addimage(Gdiplus::Image *mimage) {
 void Animation::drawimage(CDC *pDC, CPoint pos, int image_index, int animation_index) {
 	Gdiplus::Graphics graphics(pDC->m_hDC);
 
-	float moveX = slice_picture[image_index][animation_index].right / 2 + pos.x;
-	float moveY = slice_picture[image_index][animation_index].bottom / 2 + pos.y;
+	float moveX = (slice_picture[image_index][animation_index].right*scale) / 2 + pos.x;
+	float moveY = (slice_picture[image_index][animation_index].bottom*scale) / 2 + pos.y;
 	graphics.TranslateTransform(moveX, moveY);
 	graphics.RotateTransform(rotation, Gdiplus::MatrixOrderPrepend);
 	graphics.TranslateTransform(-moveX, -moveY);
@@ -48,8 +48,8 @@ void Animation::drawimage(CDC *pDC, CPoint pos, int image_index, int animation_i
 	//graphics.ScaleTransform(scale, scale, Gdiplus::MatrixOrderAppend);
 
 	Gdiplus::Pen blackPen(Gdiplus::Color(255, 0, 0, 0), 3);
-	/*graphics.DrawRectangle(&blackPen, pos.x, pos.y
-		,(long)( (float)slice_picture[image_index][animation_index].right*scale), (long)((float)slice_picture[image_index][animation_index].bottom*scale));*/
+	graphics.DrawRectangle(&blackPen, pos.x, pos.y
+		,(long)( (float)slice_picture[image_index][animation_index].right*scale), (long)((float)slice_picture[image_index][animation_index].bottom*scale));
 	Gdiplus::ImageAttributes attrs;
 	//attrs.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
 	graphics.SetPixelOffsetMode(Gdiplus::PixelOffsetModeHalf);
@@ -58,7 +58,16 @@ void Animation::drawimage(CDC *pDC, CPoint pos, int image_index, int animation_i
 	graphics.DrawImage(image[image_index], rect, slice_picture[image_index][animation_index].left, slice_picture[image_index][animation_index].top
 		, slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom, Gdiplus::UnitPixel,&attrs,NULL,NULL);
 	};
+void Animation::drawimage(CDC *pDC, CPoint pos,CPoint size, int image_index, int animation_index) {
+	Gdiplus::Graphics graphics(pDC->m_hDC);
+	Gdiplus::ImageAttributes attrs;
+	//attrs.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
+	graphics.SetPixelOffsetMode(Gdiplus::PixelOffsetModeHalf);
 
+	Gdiplus::Rect  rect = Gdiplus::Rect(pos.x, pos.y, size.x, size.y);
+	graphics.DrawImage(image[image_index], rect, slice_picture[image_index][animation_index].left, slice_picture[image_index][animation_index].top
+		, slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom, Gdiplus::UnitPixel, &attrs, NULL, NULL);
+};
 Animation::~Animation() {
 	delete[]slice_picture;
 	delete slice_num;

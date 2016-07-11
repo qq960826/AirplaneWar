@@ -19,7 +19,3 @@ void PlaneSelf::Onedgebottom() {
 	if (velocity.y < 0)velocity.y = 0;
 };
 
-void PlaneSelf::draw(CDC *pDC) {
-	this->calculate_location();
-	mAnimation->drawimage(pDC, this->pos, mproperty->pictureid,0);
-};

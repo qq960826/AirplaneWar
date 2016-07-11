@@ -138,10 +138,10 @@ void CMFCApplication3View::OnInitialUpdate() {
 
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
-	plane_self.setproperty(pDoc->mplane_property[1]);
+	plane_self.setproperty(pDoc->mplane_property[2]);
 	plane_self.setDoc(pDoc);
 	plane_self.level = 2;
-
+	plane_self.exp = 0;
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(2, 2000, NULL);//generateenemy
 	this->SetTimer(3, 3000, NULL);//generateenemy
@@ -160,6 +160,7 @@ CString GetWorkDir()
 
 afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	using namespace Gdiplus;
+	long t1 = GetTickCount();
 	CClientDC DC(this);
 	CRect rect;
 	CBitmap MemBitmap;//?????
@@ -170,17 +171,17 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	if (!pDoc)
 		return;
 	switch (nIDEvent) {
-	case 1://MoveWindow(0, 0, 100, 100, TRUE);
+	case 1:{//MoveWindow(0, 0, 100, 100, TRUE);
 
 
 		this->GetClientRect(rect);
 		MemBitmap.CreateCompatibleBitmap(&DC, rect.Width(), rect.Height());
 		MemDC.SelectObject(&MemBitmap);
 		MemDC.FillSolidRect(rect, RGB(255, 255, 255));
-		
 
 
-		pDoc->mBackground->drawbackground(&MemDC, 2);
+
+		pDoc->mBackground->drawbackground(&MemDC, 3);
 		plane_self.draw(&MemDC);
 		// pos;
 		for (POSITION pos = pDoc->list_bullet_general_self.GetHeadPosition(); pos != NULL;)
@@ -200,7 +201,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		{
 			POSITION del = pos;
 			BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_enemy.GetNext(pos);
-			CRect temp_rect =CRect( temp->getlocation());
+			CRect temp_rect = CRect(temp->getlocation());
 			temp_rect.bottom *= temp->property->scale;
 			temp_rect.right *= temp->property->scale;
 			//temp_rect.top += temp_rect.bottom;
@@ -208,15 +209,13 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			if (plane_self.isCollsion(temp_rect)) {
 				plane_self.attack(temp);
 				temp->finished = 1;
-				
+
 				Explosion *temp_explo;
 				temp_explo = new Explosion();
-				temp_explo->setAnimation(pDoc->manimation_animation);
+				temp_explo->setAnimation(pDoc->manimation_explosion);
 				temp_explo->type = 0;
-				temp_explo->setpos(CPoint(temp->pos.x+(temp->objectsize.x)/2,temp->pos.y+(temp->objectsize.y)) );
+				temp_explo->setpos(CPoint(temp->pos.x + (temp->objectsize.x*temp->property->scale) / 2, temp->pos.y + (temp->objectsize.y*temp->property->scale)));
 				temp_explo->windowsize = pDoc->windowssize;
-				
-				//pDoc->list_bullet_general_enemy.RemoveAt(del_bullet);
 				pDoc->list_explosion.AddTail((CObject*)temp_explo);
 			}
 			if (temp->finished) {
@@ -231,46 +230,63 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
 
 			if (plane_self.isCollsion(temp->getlocation())) {
-				Explosion *temp_explo;
-				plane_self.attack(temp);
-				temp_explo = new Explosion();
-				temp_explo->setAnimation(pDoc->manimation_animation);
-				temp_explo->setpos(CPoint(plane_self.pos));
-				temp_explo->windowsize = pDoc->windowssize;
-				temp_explo->type = 0;
-				pDoc->list_explosion.AddTail((CObject*)temp_explo);
-			}
+				if (temp->cooldown_collision < 3) {//collison colddown
+					temp->cooldown_collision++;
 
+				}
+				else {
+					temp->cooldown_collision = 0;
+					Explosion *temp_explo;
+					plane_self.attack(temp);
+					temp_explo = new Explosion();
+					temp_explo->setAnimation(pDoc->manimation_explosion);
+					temp_explo->setpos(CPoint(plane_self.pos));
+					temp_explo->windowsize = pDoc->windowssize;
+					temp_explo->type = 0;
+					pDoc->list_explosion.AddTail((CObject*)temp_explo);
+				}
+			}
 
 			for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {
 				POSITION del_bullet = pos1;
- 				BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
+				BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
 				//temp1= (BulletGeneral *)
-				if (temp->isCollsion(temp1->getlocation())) {
-					//pDoc->list_bullet_general_self.
+				CRect temp_rect = CRect(temp1->getlocation());
+				temp_rect.bottom *= temp1->property->scale;
+				temp_rect.right *= temp1->property->scale;
+
+
+				if (temp->isCollsion(temp_rect)) {
+					temp->isCollsion(temp1->getlocation());
 					temp->attack(temp1);
 					temp1->finished = 1;
 					Explosion *temp_explo;
 					temp_explo = new Explosion();
-					temp_explo->setAnimation(pDoc->manimation_animation);
-					temp_explo->setpos( CPoint(temp1->pos));
+					temp_explo->setAnimation(pDoc->manimation_explosion);
+					temp_explo->setpos(CPoint(temp1->pos));
 					temp_explo->windowsize = pDoc->windowssize;
 					temp_explo->type = 0;
 					pDoc->list_bullet_general_self.RemoveAt(del_bullet);
 					pDoc->list_explosion.AddTail((CObject*)temp_explo);
 					//pDoc->list_bullet_general_self.RemoveAll();
 				}
-				
+
 			}
 			if (temp->hp <= 0) {
 				Explosion *temp_explo;
 				temp_explo = new Explosion();
-				temp_explo->setAnimation(pDoc->manimation_animation);
+				temp_explo->setAnimation(pDoc->manimation_explosion);
 				temp_explo->setpos(CPoint(temp->pos));
 				temp_explo->windowsize = pDoc->windowssize;
 				temp_explo->type = 1;
 				pDoc->list_explosion.AddTail((CObject*)temp_explo);
+
 				temp->finished = 1;
+				plane_self.exp += temp->exp;
+
+
+				CString s; s.Format(_T("%d\n"), plane_self.exp);
+				AfxTrace(s);
 			}
 			if (temp->finished) {
 				//delete[] temp1 ;
@@ -281,16 +297,16 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 			//pDoc->list_bullet_general_self.RemoveAt(pos)
 			t += 0.1;
-			//temp->setvelocity(CPoint(0,0));
-			temp->setvelocity(CPoint(sin(t)*20,cos(t)*20));
-			temp->Draw(&MemDC);
+			temp->setvelocity(CPoint(0, 0));
+			//temp->setvelocity(CPoint(sin(t)*20,cos(t)*20));
+			temp->draw(&MemDC);
 			continue;
 		}
 		for (POSITION pos = pDoc->list_explosion.GetHeadPosition(); pos != NULL;)
 		{
 			POSITION del = pos;
 			Explosion *temp = (Explosion *)pDoc->list_explosion.GetNext(pos);
-			
+
 			temp->Draw(&MemDC);
 			if (temp->finished) {
 				pDoc->list_explosion.RemoveAt(del);
@@ -299,15 +315,19 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			temp->Draw(&MemDC);
 		}
 
-
 		DC.BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
+		long t2 = GetTickCount();//程序段结束后取得系统运行时间(ms) 　　
+		CString str;
+		str.Format(L"time:%dms\n", t2 - t1);//前后之差即 程序运行时间 　　
+		AfxTrace(str);//获取系统运行时间 　　
 		break;
+	}
 	case 2://generate the airplane of enemy
 		if (pDoc->list_airplane_enemy.GetCount() > 0)return;
 		PlaneEmenyGeneral *temp;
 		temp = new PlaneEmenyGeneral();
 		temp->setAnimation(pDoc->manimation_enemy);
-		temp->setproperty(pDoc->mplane_property[0]);
+		temp->setproperty(pDoc->mplane_property[10]);
 		temp->setDoc(pDoc);
 		temp->setvelocity(CPoint(0, 0));
 		temp->setacceleration(CPoint(0, 0));
@@ -357,37 +377,35 @@ void CMFCApplication3View::InitalizeAirplane() {
 	json json_fromfile= json::parse(strStd);
 	f1.Close();
 
-	pDoc->mplane_property = (struct plane_property**) malloc(json_fromfile.size()*sizeof(plane_property**));//为所有的飞机分配内存
+	pDoc->mplane_property = new plane_property * [json_fromfile.size()];
 	for (int i = 0; i < json_fromfile.size(); i++) {//traverse all the plane
+		struct plane_property* temp_plane = new plane_property ;
 
-		//configure plane
-		struct plane_property* temp_plane = (struct plane_property*) malloc(sizeof(plane_property));
 		temp_plane->id= json_fromfile[i]["id"];
 		temp_plane->hp = json_fromfile[i]["hp"];
 		temp_plane->attack = json_fromfile[i]["attack"];
 		temp_plane->pictureid = json_fromfile[i]["pictureid"];
-
+		temp_plane->exp = json_fromfile[i]["exp"];
 		//configure bulletset
 		json json_bullet_set_all = json_fromfile[i]["bullet_set"];
-		temp_plane->mbullet_set = (struct bullet_set*) malloc(sizeof(bullet_set));
+		temp_plane->mbullet_set = new struct bullet_set;
 		temp_plane->mbullet_set->id = json_bullet_set_all["id"];
 		auto json_bullet_set_bullet = json_bullet_set_all["bullet"];
 		temp_plane->mbullet_set->num_set = json_bullet_set_bullet.size();
-		temp_plane->mbullet_set->bullet = (struct bullet_property***) malloc(sizeof(bullet_property**)*json_bullet_set_bullet.size());
-		
+		temp_plane->mbullet_set->bullet = new struct bullet_property**[json_bullet_set_bullet.size()+1];
 		//configure bullet property
 		
 
 		for (int j = 0; j < json_bullet_set_all.size(); j++) {//traverse single set
 			json json_bullet_set_each = json_bullet_set_bullet[j];
-			temp_plane->mbullet_set->bullet[j] = (struct bullet_property**) malloc(sizeof(bullet_property*)*json_bullet_set_each["bullet_property"].size());
-			if(!j)temp_plane->mbullet_set->num_each = (int*)malloc(sizeof(int)*json_bullet_set_each["bullet_property"].size());
+			temp_plane->mbullet_set->bullet[j] = new struct bullet_property*[json_bullet_set_each["bullet_property"].size()+1];
+			
+			if (!j)temp_plane->mbullet_set->num_each = new int [json_bullet_set_each["bullet_property"].size()+1];
 
 			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each["bullet_property"].size();
 			for (int k = 0; k < json_bullet_set_each["bullet_property"].size(); k++) {//traverse the element in the single set
 				json json_bullet_each = json_bullet_set_each["bullet_property"][k];
-
-				temp_plane->mbullet_set->bullet[j][k] = (struct bullet_property*) malloc(sizeof(bullet_property));
+				temp_plane->mbullet_set->bullet[j][k] = new struct bullet_property;
 				temp_plane->mbullet_set->bullet[j][k]->id= json_bullet_each["id"];
 				temp_plane->mbullet_set->bullet[j][k]->attack = json_bullet_each["attack"];
 				temp_plane->mbullet_set->bullet[j][k]->pictureid = json_bullet_each["pictureid"];
@@ -397,7 +415,6 @@ void CMFCApplication3View::InitalizeAirplane() {
 				temp_plane->mbullet_set->bullet[j][k]->offset = new CPoint(json_bullet_each["offset"][0], json_bullet_each["offset"][1]);
 				
 			}
-			//mp_plane->mbullet_set->bullet[j]
 		
 		}
 		pDoc->mplane_property[i] = temp_plane;
@@ -458,15 +475,11 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 	}
 
-	//pDoc->manimation_enemy = new Animation(2);
-	//temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy.png");
-	//int temp3 [] = { 162,475,102,73 };
-	//pDoc->manimation_enemy->addimage(temp, temp3, 1);
 
 
 
 	//load explosion
-	pDoc->manimation_animation = new Animation(1);
+	pDoc->manimation_explosion = new Animation(1);
 	temp = Image::FromFile(GetModuleDir() + "\\explosion.png");
 	int temp4[] = { 
 		76,497,8,8,//bullet explosion
@@ -481,7 +494,7 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 	};
 
-	pDoc->manimation_animation->addimage(temp, temp4, 8);
+	pDoc->manimation_explosion->addimage(temp, temp4, 8);
 	int temp5[] = {
 		415,405,92,92,//general airplane explode
 		706,262,128,128,
@@ -493,7 +506,7 @@ void CMFCApplication3View::LoadImageFromFile() {
 		723,392,40,40
 
 	};
-	pDoc->manimation_animation->addimage(temp, temp5, 8);
+	pDoc->manimation_explosion->addimage(temp, temp5, 8);
 
 
 
@@ -504,6 +517,12 @@ void CMFCApplication3View::LoadImageFromFile() {
 		pDoc->manimation_bullet->addimage(temp);
 	}
 
+
+	pDoc->manimation_hp = new Animation(2);
+	temp = Image::FromFile(GetModuleDir() + "\\img_other\\img_hp1.png");
+	pDoc->manimation_hp->addimage(temp);
+	temp = Image::FromFile(GetModuleDir() + "\\img_other\\img_hp2.png");
+	pDoc->manimation_hp->addimage(temp);
 }
 
 void CMFCApplication3View::OnLButtonDown(UINT nFlags, CPoint point)

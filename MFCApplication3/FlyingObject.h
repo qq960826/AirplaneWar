@@ -18,6 +18,7 @@ struct bullet_set {
 	int id;
 	int num_set;
 	int *num_each;
+	int *exp_each;
 	bullet_property ***bullet;
 };
 struct plane_property {
@@ -25,6 +26,7 @@ struct plane_property {
 	int hp;
 	int attack;
 	int pictureid;
+	int exp;
 	bullet_set *mbullet_set;
 };
 class FlyingObject {

@@ -16,6 +16,8 @@ public:
 		CPoint temp_velocity;
 		temp_velocity.x = -mproperty->speed*sin((mproperty->rotation*pi) / 180);
 		temp_velocity.y = mproperty->speed*cos((mproperty->rotation*pi) / 180);
+
+		mattack = property->attack;
 		velocity = temp_velocity;
 
 
@@ -27,11 +29,14 @@ public:
 	};
 	void Onedgeleft() {
 
+		if (pos.x<-objectsize.x)finished = 1;
 
 	};
 	void Onedgetop() {
+		if (pos.y<-objectsize.x)finished = 1;
 	};
 	void Onedgeright() {
+		if (pos.x>objectsize.x + windowsize->x)finished = 1;
 	
 	};
 	void Onedgebottom() {
@@ -39,7 +44,7 @@ public:
 		
 	};
 	CRect getlocation() {
-
+		
 		return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
 	};
 	void setpictureid(int a) {

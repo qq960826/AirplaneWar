@@ -16,4 +16,8 @@ public:
 	void setrotation(float angle);
 	void setscale(float a) { scale = a; };
 	CPoint getimagesize(int image_index, int animation_index);
+	CPoint getsize(int image_index,int animation_index) {
+		return CPoint(slice_picture[image_index][animation_index].right*scale, slice_picture[image_index][animation_index].bottom*scale);
+	}
+	void drawimage(CDC *pDC, CPoint pos, CPoint size, int image_index, int animation_index);
 };

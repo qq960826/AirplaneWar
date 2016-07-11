@@ -16,8 +16,9 @@ public://Í¼Æ¬×ÊÔ´
 	Animation *manimation_airplane_self;
 	Animation *manimation_enemy;
 	Animation *manimation_background;
-	Animation *manimation_animation;
+	Animation *manimation_explosion;
 	Animation *manimation_bullet;
+	Animation *manimation_hp;
 
 	Background *mBackground;
 
