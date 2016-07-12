@@ -22,6 +22,7 @@ class CMFCApplication3View : public CView
 {
 public:
 	void InitalizeAirplane();
+	void InitializeEquation();
 public:
 	PlaneSelf plane_self;
 

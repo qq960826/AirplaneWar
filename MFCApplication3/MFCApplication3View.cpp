@@ -130,6 +130,7 @@ void CMFCApplication3View::OnInitialUpdate() {
 	MemDC.CreateCompatibleDC(NULL);
 	LoadImageFromFile();
 	InitalizeAirplane();
+	InitializeEquation();
 	pDoc->mBackground = new Background();
 	pDoc->mBackground->mAnimation = pDoc->manimation_background;
 	pDoc->mBackground->setscreensize(CPoint(512,768));
@@ -257,7 +258,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 
 				if (temp->isCollsion(temp_rect)) {
-					temp->isCollsion(temp1->getlocation());
+					//temp->isCollsion(temp1->getlocation());
 					temp->attack(temp1);
 					temp1->finished = 1;
 					Explosion *temp_explo;
@@ -329,9 +330,11 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		temp->setAnimation(pDoc->manimation_enemy);
 		temp->setproperty(pDoc->mplane_property[10]);
 		temp->setDoc(pDoc);
-		temp->setvelocity(CPoint(0, 0));
-		temp->setacceleration(CPoint(0, 0));
-		temp->setpos(CPoint(150, 150));
+		//temp->setvelocity(CPoint(0, 0));
+		//temp->setacceleration(CPoint(0, 0));
+		temp->setoffset(CPoint(150, 150));
+		temp->setequation(pDoc->mmove_equation_set[0]);
+		temp->setvelociety(50);
 		//temp->setHP(10);
 		//temp->setAttack(1);
 
@@ -357,7 +360,66 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 	
 };
+void CMFCApplication3View::InitializeEquation() {
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	using json = nlohmann::json;
 
+	CStdioFile f1(GetModuleDir() + L"\\config_equation.json", CFile::typeText);
+	CString all = L"";
+	CString test;
+	while (f1.ReadString(test)) {
+		all += test;
+	}
+
+	CT2CA pszConvertedAnsiString(all);
+	std::string strStd(pszConvertedAnsiString);
+	json json_fromfile = json::parse(strStd);
+	f1.Close();
+
+	pDoc->mmove_equation_set = new move_equation_set *[json_fromfile.size()];
+	for (int i = 0; i < json_fromfile.size(); i++) {
+		struct move_equation_set* temp_plane = new move_equation_set;
+		temp_plane->id = json_fromfile[i]["id"];
+		temp_plane->loop = json_fromfile[i]["loop"];
+		int temp_equation_num = json_fromfile[i]["equation"].size();
+
+		temp_plane->num_equation = temp_equation_num;
+		temp_plane->move_equation = new move_equation*[temp_equation_num+1];
+
+
+		for (int j = 0; j < temp_equation_num; j++) {
+			auto temp_json_equation = json_fromfile[i]["equation"][j];
+			auto aa = temp_json_equation.dump();
+			temp_plane->move_equation[j] = new move_equation;
+			temp_plane->move_equation[j]->x.base = temp_json_equation["x"]["base"];
+			temp_plane->move_equation[j]->x.increment = temp_json_equation["x"]["increment"];
+			temp_plane->move_equation[j]->x.target = temp_json_equation["x"]["target"];
+			{std::string a = temp_json_equation["x"]["expression"];
+			temp_plane->move_equation[j]->x.equation = a; }
+
+			temp_plane->move_equation[j]->y.base = temp_json_equation["y"]["base"];
+			temp_plane->move_equation[j]->y.increment = temp_json_equation["y"]["increment"];
+			temp_plane->move_equation[i]->y.target = temp_json_equation["y"]["target"];
+			{std::string a = temp_json_equation["y"]["expression"];
+			temp_plane->move_equation[j]->y.equation = a; }
+
+
+
+
+
+		}
+		pDoc->mmove_equation_set[i] = temp_plane;
+		
+
+
+
+	}
+
+
+}
 void CMFCApplication3View::InitalizeAirplane() {
 	CMFCApplication3Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);

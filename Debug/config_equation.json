@@ -1,0 +1,86 @@
+[
+	{
+		"id":0,
+		"num_equation":5,
+		"loop":0,
+		"equation":[
+		
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":0,
+						"increment":0.1,
+						"target":3.14
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":0,
+						"increment":0.1,
+						"target":3.14
+					}
+			},
+			{
+				"x":{
+						"expression":"0",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					},
+				"y":{
+						"expression":"v",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					}
+			},
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":3.14,
+						"increment":0.1,
+						"target":9.42
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":3.14,
+						"increment":0.1,
+						"target":9.42
+					}
+			},
+			{
+				"x":{
+						"expression":"0",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					},
+				"y":{
+						"expression":"-v",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					}
+			},
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":9.42,
+						"increment":0.1,
+						"target":12.56
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":9.42,
+						"increment":0.1,
+						"target":12.56
+					}
+			}
+		
+		
+		]
+	}
+
+]

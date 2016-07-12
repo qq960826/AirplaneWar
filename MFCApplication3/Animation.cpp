@@ -48,8 +48,8 @@ void Animation::drawimage(CDC *pDC, CPoint pos, int image_index, int animation_i
 	//graphics.ScaleTransform(scale, scale, Gdiplus::MatrixOrderAppend);
 
 	Gdiplus::Pen blackPen(Gdiplus::Color(255, 0, 0, 0), 3);
-	graphics.DrawRectangle(&blackPen, pos.x, pos.y
-		,(long)( (float)slice_picture[image_index][animation_index].right*scale), (long)((float)slice_picture[image_index][animation_index].bottom*scale));
+	//graphics.DrawRectangle(&blackPen, pos.x, pos.y
+	//	,(long)( (float)slice_picture[image_index][animation_index].right*scale), (long)((float)slice_picture[image_index][animation_index].bottom*scale));
 	Gdiplus::ImageAttributes attrs;
 	//attrs.SetWrapMode(Gdiplus::WrapModeTileFlipXY);
 	graphics.SetPixelOffsetMode(Gdiplus::PixelOffsetModeHalf);

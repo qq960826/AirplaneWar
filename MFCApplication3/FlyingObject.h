@@ -4,7 +4,29 @@
 #include "atltypes.h"
 #include "Animation.h"
 #include "MFCApplication3Doc.h"
+#include "exprtk.hpp"
+
+#include <string>
 #define pi 3.1415926
+struct move_equation_single {
+	std::string equation;
+	float base;
+	float increment;
+	float target;
+
+};
+struct move_equation {
+	move_equation_single x;
+	move_equation_single y;
+};
+struct move_equation_set {
+
+	int id;
+	int num_equation;
+	int loop;
+	move_equation **move_equation;
+
+};
 struct bullet_property {
 	int id;
 	int pictureid;
@@ -52,7 +74,7 @@ public:
 	virtual void Onedgetop() = 0;
 	virtual void Onedgeright() = 0;
 	virtual void Onedgebottom() = 0;
-	void calculate_location();
+	virtual void calculate_location();
 	void setAnimation(Animation *a);
 	FlyingObject() :pos(0, 0), velocity(0, 0), acceleration(0, 0) {};
 	FlyingObject(CPoint a, CPoint b, Animation*c) :pos(a), velocity(b), mAnimation(c){};

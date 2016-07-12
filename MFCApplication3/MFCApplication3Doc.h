@@ -23,7 +23,10 @@ public://图片资源
 	Background *mBackground;
 
 
-	struct plane_property **mplane_property;
+	struct plane_property **mplane_property;//飞机参数
+	struct move_equation_set **mmove_equation_set;
+
+
 
 
 	//Gdiplus::Image *image_bullet_general;
