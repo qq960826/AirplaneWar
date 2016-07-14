@@ -24,6 +24,7 @@ struct move_equation_set {
 	int id;
 	int num_equation;
 	int loop;
+	CPoint offset;
 	move_equation **move_equation;
 
 };
@@ -49,6 +50,8 @@ struct plane_property {
 	int attack;
 	int pictureid;
 	int exp;
+	int equation_num;
+	int *equation_id;
 	bullet_set *mbullet_set;
 };
 class FlyingObject {

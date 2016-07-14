@@ -238,6 +238,7 @@
     <ClInclude Include="BulletGeneral.h" />
     <ClInclude Include="PlaneEmenyGeneral.h" />
     <ClInclude Include="Equation.h" />
+    <ClInclude Include="PlaneBoss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />

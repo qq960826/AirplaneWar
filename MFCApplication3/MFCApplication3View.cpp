@@ -139,9 +139,9 @@ void CMFCApplication3View::OnInitialUpdate() {
 
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
-	plane_self.setproperty(pDoc->mplane_property[2]);
+	plane_self.setproperty(pDoc->mplane_property[0]);
 	plane_self.setDoc(pDoc);
-	plane_self.level = 2;
+	plane_self.level = 0;
 	plane_self.exp = 0;
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(2, 2000, NULL);//generateenemy
@@ -172,7 +172,9 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	if (!pDoc)
 		return;
 	switch (nIDEvent) {
-	case 1:{//MoveWindow(0, 0, 100, 100, TRUE);
+	case 1:{
+		//MoveWindow(0, 0, 100, 100, TRUE);
+
 
 
 		this->GetClientRect(rect);
@@ -283,6 +285,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 				pDoc->list_explosion.AddTail((CObject*)temp_explo);
 
 				temp->finished = 1;
+				mgamesetting.mission_killed++;
 				plane_self.exp += temp->exp;
 
 
@@ -298,7 +301,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 			//pDoc->list_bullet_general_self.RemoveAt(pos)
 			t += 0.1;
-			temp->setvelocity(CPoint(0, 0));
+			
 			//temp->setvelocity(CPoint(sin(t)*20,cos(t)*20));
 			temp->draw(&MemDC);
 			continue;
@@ -315,6 +318,30 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			}
 			temp->Draw(&MemDC);
 		}
+		if (plane_boss != NULL) {
+			plane_boss->draw(&MemDC);
+		}
+
+
+		Gdiplus::Graphics graphics(MemDC);
+		// Initialize arguments.
+		Gdiplus::Font myFont(L"Arial", 10);
+		RectF layoutRect(0.0f, 0.0f, 200.0f, 50.0f);
+		StringFormat format;
+		//format.SetAlignment(StringAlignmentCenter);
+		SolidBrush blackBrush(Color(255, 255, 0, 0));
+
+		// Draw string.
+		CString str1; str1.Format(L"HP:%d\nEXP:%d", plane_self.hp, plane_self.exp);
+		graphics.DrawString(
+			str1,
+			20,
+			&myFont,
+			layoutRect,
+			&format,
+			&blackBrush);
+
+		// Draw layoutRect.
 
 		DC.BitBlt(0, 0, rect.Width(), rect.Height(), &MemDC, 0, 0, SRCCOPY);
 		long t2 = GetTickCount();//程序段结束后取得系统运行时间(ms) 　　
@@ -323,17 +350,60 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		AfxTrace(str);//获取系统运行时间 　　
 		break;
 	}
-	case 2://generate the airplane of enemy
-		if (pDoc->list_airplane_enemy.GetCount() > 0)return;
+	case 2: {//关卡设置
+		if (plane_self.exp > plane_self.mproperty->exp&&plane_self.level!=3) {//飞机升级
+			plane_self.level++;
+			plane_self.setproperty(pDoc->mplane_property[plane_self.level]);
+
+			//plane_self.setDoc(pDoc);
+		}
+		//if()
+		if (pDoc->list_airplane_enemy.GetCount() > 4)return;
+		if (mgamesetting.bossmode==1&& plane_boss!=NULL) {//
+			if (plane_boss->hp <= 0) {
+				delete plane_boss;
+				plane_boss = NULL;
+				mgamesetting.bossmode = 0;
+				if (mgamesetting.mission_present < 3) {
+					mgamesetting.mission_present++;
+				}
+			}
+			else 
+			{
+				return;
+			}
+			
+
+		}
+		if (mgamesetting.mission_killed >= mgamesetting.mission_level[mgamesetting.mission_present]) {
+			mgamesetting.bossmode = 1;
+			plane_boss= new PlaneBoss();
+			plane_boss->setAnimation(pDoc->manimation_enemy);
+			plane_boss->setproperty(pDoc->mplane_property[16]);
+			plane_boss->setDoc(pDoc);
+			plane_boss->setvelocity(CPoint(0, 0));
+			plane_boss->setacceleration(CPoint(0, 0));
+			plane_boss->setpos(CPoint(150, 150));
+			return;
+
+
+
+		}
+		int selection[] = { 4,5,6,7,8,9,10,11,12,13,15 };
+		srand((unsigned)time(NULL));
 		PlaneEmenyGeneral *temp;
 		temp = new PlaneEmenyGeneral();
+		int option1, option2;
+		option1 = rand() % 11;
+		option2 = rand() % pDoc->mplane_property[selection[option1]]->equation_num;
+
 		temp->setAnimation(pDoc->manimation_enemy);
-		temp->setproperty(pDoc->mplane_property[10]);
+		temp->setproperty(pDoc->mplane_property[selection[option1]]);
 		temp->setDoc(pDoc);
 		//temp->setvelocity(CPoint(0, 0));
 		//temp->setacceleration(CPoint(0, 0));
-		temp->setoffset(CPoint(150, 150));
-		temp->setequation(pDoc->mmove_equation_set[0]);
+		//temp->setoffset(CPoint(150, 150));
+		temp->setequation(pDoc->mmove_equation_set[option2]);
 		temp->setvelociety(50);
 		//temp->setHP(10);
 		//temp->setAttack(1);
@@ -341,9 +411,10 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		pDoc->list_airplane_enemy.AddTail((CObject*)temp);
 
 
+		//pDoc->list_airplane_enemy.AddTail((CObject*)temp);
 
 
-		break;
+		break; }
 	case 3://ennemy launch the bullet
 		if (pDoc->list_airplane_enemy.IsEmpty()) {
 			return;
@@ -373,11 +444,11 @@ void CMFCApplication3View::InitializeEquation() {
 	while (f1.ReadString(test)) {
 		all += test;
 	}
-
+	f1.Close();
 	CT2CA pszConvertedAnsiString(all);
 	std::string strStd(pszConvertedAnsiString);
 	json json_fromfile = json::parse(strStd);
-	f1.Close();
+	
 
 	pDoc->mmove_equation_set = new move_equation_set *[json_fromfile.size()];
 	for (int i = 0; i < json_fromfile.size(); i++) {
@@ -385,7 +456,8 @@ void CMFCApplication3View::InitializeEquation() {
 		temp_plane->id = json_fromfile[i]["id"];
 		temp_plane->loop = json_fromfile[i]["loop"];
 		int temp_equation_num = json_fromfile[i]["equation"].size();
-
+		temp_plane->offset.x = json_fromfile[i]["offset"]["x"];
+		temp_plane->offset.y = json_fromfile[i]["offset"]["y"];
 		temp_plane->num_equation = temp_equation_num;
 		temp_plane->move_equation = new move_equation*[temp_equation_num+1];
 
@@ -402,7 +474,7 @@ void CMFCApplication3View::InitializeEquation() {
 
 			temp_plane->move_equation[j]->y.base = temp_json_equation["y"]["base"];
 			temp_plane->move_equation[j]->y.increment = temp_json_equation["y"]["increment"];
-			temp_plane->move_equation[i]->y.target = temp_json_equation["y"]["target"];
+			temp_plane->move_equation[j]->y.target = temp_json_equation["y"]["target"];
 			{std::string a = temp_json_equation["y"]["expression"];
 			temp_plane->move_equation[j]->y.equation = a; }
 
@@ -433,11 +505,11 @@ void CMFCApplication3View::InitalizeAirplane() {
 	while (f1.ReadString(test)) {
 		all += test;
 	}
-
+	f1.Close();
 	CT2CA pszConvertedAnsiString(all);
 	std::string strStd(pszConvertedAnsiString);
 	json json_fromfile= json::parse(strStd);
-	f1.Close();
+	
 
 	pDoc->mplane_property = new plane_property * [json_fromfile.size()];
 	for (int i = 0; i < json_fromfile.size(); i++) {//traverse all the plane
@@ -448,6 +520,19 @@ void CMFCApplication3View::InitalizeAirplane() {
 		temp_plane->attack = json_fromfile[i]["attack"];
 		temp_plane->pictureid = json_fromfile[i]["pictureid"];
 		temp_plane->exp = json_fromfile[i]["exp"];
+
+		if (!json_fromfile[i]["equationid"].is_null()) {
+			temp_plane->equation_num = json_fromfile[i]["equationid"].size();
+			temp_plane->equation_id = new int[temp_plane->equation_num+1];
+			for (int l = 0; l < temp_plane->equation_num; l++) {
+				temp_plane->equation_id[l] = json_fromfile[i]["equationid"][l];
+
+			
+			}
+
+		}
+
+
 		//configure bulletset
 		json json_bullet_set_all = json_fromfile[i]["bullet_set"];
 		temp_plane->mbullet_set = new struct bullet_set;
@@ -529,8 +614,8 @@ void CMFCApplication3View::LoadImageFromFile() {
 
 
 	//load enemy airplane
-	pDoc->manimation_enemy = new Animation(23);
-	for (int i = 1; i <= 23; i++) {
+	pDoc->manimation_enemy = new Animation(29);
+	for (int i = 1; i <= 29; i++) {
 		a.Format(_T("%d"), i);
 		temp = Image::FromFile(GetModuleDir() + "\\img_plane_enemy\\img_plane_enemy" + a + ".png");
 		pDoc->manimation_enemy->addimage(temp);

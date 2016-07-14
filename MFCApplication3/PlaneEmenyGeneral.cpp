@@ -8,18 +8,18 @@ PlaneEmenyGeneral::PlaneEmenyGeneral() :PlaneBase() {
 void PlaneEmenyGeneral::setAttack(int a) { mattack = a; };
 void PlaneEmenyGeneral::setHP(int b) { hp = b; };
 void PlaneEmenyGeneral::Onedgeleft() {
-
+	if (pos.x<-objectsize.x)finished = 1;
 };
 void PlaneEmenyGeneral::Onedgetop() {
-
+	if (pos.y<-objectsize.x)finished = 1;
 
 };
 void PlaneEmenyGeneral::Onedgeright() {
-
+	if (pos.x>objectsize.x + windowsize->x)finished = 1;
 
 };
 void PlaneEmenyGeneral::Onedgebottom() {
-
+	if (pos.y>objectsize.y + windowsize->y)finished = 1;
 };
 //void PlaneEmenyGeneral::fire(CObList *bullet,int id) {
 //	int num = mproperty->mbullet_set->num_each[id];

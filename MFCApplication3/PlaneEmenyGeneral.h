@@ -19,7 +19,7 @@ public:
 	void setequation(move_equation_set *a) {
 		equation_set = *a;
 		mequation.loadequation(equation_set);
-		mequation.setoffset(&offset);
+		mequation.setoffset(&equation_set.offset);
 	};
 	void setoffset(CPoint a) {
 		offset = a;
@@ -27,6 +27,7 @@ public:
 	void calculate_location() {
 		mequation.calculate();
 		pos = mequation.getresult();
+		edgedetect();
 		
 	
 	};

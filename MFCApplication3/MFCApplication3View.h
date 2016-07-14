@@ -8,6 +8,7 @@
 #include "BulletGeneral.h"
 #include "PlaneEmenyGeneral.h"
 #include "Explosion.h"
+#include "PlaneBoss.h"
 //#pragma comment( lib, "json.lib" )
 #include "json.hpp"
 #include <string>
@@ -16,7 +17,16 @@
 #pragma once
 using namespace Gdiplus;
 
+struct gamesetting {
+	int mission_present=0;
+	bool bossmode=0;
+	int mission_level[4]  = { 20,50,90,140 };
+	int mission_killed = 0;
+	
 
+
+
+};
 
 class CMFCApplication3View : public CView
 {
@@ -25,6 +35,7 @@ public:
 	void InitializeEquation();
 public:
 	PlaneSelf plane_self;
+	PlaneBoss *plane_boss=NULL;
 
 protected: // ½ö´ÓÐòÁÐ»¯´´½¨
 	CMFCApplication3View();
@@ -40,6 +51,9 @@ public://Ë«»º³å
 	CBitmap MemBitmap;//Ë«»º´æ
 	CDC MemDC;//Ë«»º´æ¡¢
 	CBrush m_brush;//Ë¢±³¾°
+
+public:
+	gamesetting mgamesetting;
 // ÌØÐÔ
 public:
 	CMFCApplication3Doc* GetDocument() const;

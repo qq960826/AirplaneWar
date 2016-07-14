@@ -84,6 +84,9 @@
     <ClInclude Include="exprtk.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PlaneBoss.h">
+      <Filter>头文件\Plane</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication3.cpp">

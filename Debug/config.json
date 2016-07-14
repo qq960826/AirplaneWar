@@ -4,7 +4,7 @@
 	"hp":300,
 	"attack":5,
 	"pictureid":21,
-	"exp":0,
+	"exp":500,
 	"bullet_set":
 		{
 		"id":1,
@@ -40,7 +40,7 @@
 	"hp":600,
 	"attack":10,
 	"pictureid":20,
-	"exp":200,
+	"exp":1000,
 	"bullet_set":
 		{
 		"id":1,
@@ -140,7 +140,7 @@
 	"hp":1200,
 	"attack":20,
 	"pictureid":22,
-	"exp":800,
+	"exp":2000,
 	"bullet_set":
 		{
 		"id":1,
@@ -226,8 +226,8 @@
 	"id":3,
 	"hp":2400,
 	"attack":20,
-	"pictureid":22,
-	"exp":1000,
+	"pictureid":19,
+	"exp":4000,
 	"bullet_set":
 		{
 		"id":1,
@@ -318,6 +318,7 @@
 	"hp":10,
 	"attack":5,
 	"pictureid":11,
+	"equationid":[3,4,5,6,7,8],
 	"exp":10,
 	"bullet_set":
 		{
@@ -354,6 +355,7 @@
 	"hp":20,
 	"attack":10,
 	"pictureid":12,
+	"equationid":[3,4,5,6,7,8],
 	"exp":20,
 	"bullet_set":
 		{
@@ -393,6 +395,7 @@
 	"hp":30,
 	"attack":15,
 	"pictureid":13,
+	"equationid":[3,4,5,6,7,8],
 	"exp":20,
 	"bullet_set":
 		{
@@ -439,6 +442,7 @@
 	"hp":60,
 	"attack":15,
 	"pictureid":14,
+	"equationid":[3,4,5,6,7,8],
 	"exp":30,
 	"bullet_set":
 		{
@@ -474,6 +478,7 @@
 	"attack":15,
 	"pictureid":15,
 	"exp":60,
+	"equationid":[8,9],
 	"bullet_set":
 		{
 		"id":1,
@@ -594,6 +599,7 @@
 	"attack":15,
 	"pictureid":17,
 	"exp":70,
+	"equationid":[3,4,5,6,7,8,9],
 	"bullet_set":
 		{
 		"id":1,
@@ -656,6 +662,7 @@
 	"attack":15,
 	"pictureid":18,
 	"exp":100,
+	"equationid":[0,1,2,3,4,5,6,7,8,9],
 	"bullet_set":
 		{
 		"id":1,
@@ -706,5 +713,417 @@
 				}
 			]
 		}
+	},
+	
+	
+	
+	
+	{
+	"id":11,
+	"hp":40,
+	"attack":10,
+	"pictureid":10,
+	"equationid":[3,4,5,6,7,8],
+	"exp":60,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 5,
+							"attack": 10,
+							"offset": [
+								31,
+								50
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.3
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	{
+	"id":12,
+	"hp":150,
+	"attack":10,
+	"pictureid":9,
+	"equationid":[0,1,2,3,4,5,6,7,8,9],
+	"exp":200,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 21,
+							"attack": 30,
+							"offset": [
+								10,
+								50
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.7
+						},
+						{
+							"id": 0,
+							"pictureid": 21,
+							"attack": 30,
+							"offset": [
+								90,
+								50
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.7
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	{
+	"id":13,
+	"hp":100,
+	"attack":10,
+	"pictureid":8,
+	"exp":200,
+	"equationid":[0,1,2,3,4,5,6,7,8,9],
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 24,
+							"attack": 35,
+							"offset": [
+								25,
+								50
+							],
+							"rotation": 0,
+							"speed": 10,
+							"scale": 0.5
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	
+	{
+	"id":14,
+	"hp":100,
+	"attack":10,
+	"pictureid":7,
+	"exp":200,
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":1,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 2,
+							"attack": 35,
+							"offset": [
+								50,
+								50
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.5
+						}
+					]
+				}
+			]
+		}
+	},
+	
+	
+	
+	
+	
+	
+	{
+	"id":15,
+	"hp":70,
+	"attack":30,
+	"pictureid":16,
+	"exp":120,
+	"equationid":[8,9],
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":2,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 315,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 270,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 225,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 135,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 90,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 45,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						}
+						
+					]
+				}
+			]
+		}
+	},
+	
+	{
+	"id":16,
+	"hp":1000,
+	"attack":30,
+	"pictureid":23,
+	"exp":120,
+	"equationid":[8,9],
+	"bullet_set":
+		{
+		"id":1,
+		"num_set":2,
+		"bullet":
+			[
+				{
+					"cooldown":2000,
+					"num_each": 1,
+					"bullet_property": [
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 315,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 270,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 225,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 180,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 135,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 90,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 45,
+							"speed": -10,
+							"scale": 0.5
+						},
+						{
+							"id": 0,
+							"pictureid": 12,
+							"attack": 20,
+							"offset": [
+								35,
+								30
+							],
+							"rotation": 0,
+							"speed": -10,
+							"scale": 0.5
+						}
+						
+					]
+				}
+			]
+		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 ]
