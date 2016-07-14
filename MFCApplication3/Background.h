@@ -4,6 +4,7 @@
 class Background {
 private:
 	int speed;
+	int index;
 	CPoint screensize;
 	int y1, y2;
 public:
@@ -12,6 +13,6 @@ public:
 	void setscreensize(CPoint a);
 	void setspeed(int a);
 	void init(int index);
-	void drawbackground(CDC *Pdc, int index);
+	void drawbackground(CDC *Pdc);
 
 };

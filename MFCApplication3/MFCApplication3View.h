@@ -18,10 +18,11 @@
 using namespace Gdiplus;
 
 struct gamesetting {
-	int mission_present=0;
-	bool bossmode=0;
-	int mission_level[4]  = { 20,50,90,140 };
-	int mission_killed = 0;
+	int mission_present=0;//当前关卡
+	bool bossmode = 0;//boss模式
+	int mission_level[4] = { 5,50,90,140 };//升级杀敌数要求
+	int bossid [4] = {16,17,18,19};//bossid
+	int mission_killed = 0;//以杀普通敌机数目
 	
 
 

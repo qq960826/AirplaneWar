@@ -133,9 +133,9 @@ void CMFCApplication3View::OnInitialUpdate() {
 	InitializeEquation();
 	pDoc->mBackground = new Background();
 	pDoc->mBackground->mAnimation = pDoc->manimation_background;
-	pDoc->mBackground->setscreensize(CPoint(512,768));
+	pDoc->mBackground->setscreensize(CPoint(1024,768));
 	pDoc->mBackground->setspeed(12);
-	pDoc->mBackground->init(1);
+	pDoc->mBackground->init(0);
 
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
@@ -145,7 +145,7 @@ void CMFCApplication3View::OnInitialUpdate() {
 	plane_self.exp = 0;
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(2, 2000, NULL);//generateenemy
-	this->SetTimer(3, 3000, NULL);//generateenemy
+	this->SetTimer(3, 100, NULL);//generateenemy
 }
 CString GetWorkDir()
 {
@@ -184,7 +184,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 
 
-		pDoc->mBackground->drawbackground(&MemDC, 3);
+		pDoc->mBackground->drawbackground(&MemDC);
 		plane_self.draw(&MemDC);
 		// pos;
 		for (POSITION pos = pDoc->list_bullet_general_self.GetHeadPosition(); pos != NULL;)
@@ -319,6 +319,30 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			temp->Draw(&MemDC);
 		}
 		if (plane_boss != NULL) {
+			for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {
+				POSITION del_bullet = pos1;
+				BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
+				//temp1= (BulletGeneral *)
+				CRect temp_rect = CRect(temp1->getlocation());
+				temp_rect.bottom *= temp1->property->scale;
+				temp_rect.right *= temp1->property->scale;
+
+
+				if (plane_boss->isCollsion(temp_rect)) {
+					plane_boss->attack(temp1);
+					temp1->finished = 1;
+					Explosion *temp_explo;
+					temp_explo = new Explosion();
+					temp_explo->setAnimation(pDoc->manimation_explosion);
+					temp_explo->setpos(CPoint(temp1->pos));
+					temp_explo->windowsize = pDoc->windowssize;
+					temp_explo->type = 0;
+					pDoc->list_bullet_general_self.RemoveAt(del_bullet);
+					pDoc->list_explosion.AddTail((CObject*)temp_explo);
+				}
+			}
+
+
 			plane_boss->draw(&MemDC);
 		}
 
@@ -358,7 +382,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			//plane_self.setDoc(pDoc);
 		}
 		//if()
-		if (pDoc->list_airplane_enemy.GetCount() > 4)return;
+		
 		if (mgamesetting.bossmode==1&& plane_boss!=NULL) {//
 			if (plane_boss->hp <= 0) {
 				delete plane_boss;
@@ -366,8 +390,10 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 				mgamesetting.bossmode = 0;
 				if (mgamesetting.mission_present < 3) {
 					mgamesetting.mission_present++;
+					pDoc->mBackground->init(mgamesetting.mission_present);
 				}
 			}
+
 			else 
 			{
 				return;
@@ -379,7 +405,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 			mgamesetting.bossmode = 1;
 			plane_boss= new PlaneBoss();
 			plane_boss->setAnimation(pDoc->manimation_enemy);
-			plane_boss->setproperty(pDoc->mplane_property[16]);
+			plane_boss->setproperty(pDoc->mplane_property[mgamesetting.bossid[mgamesetting.mission_present]]);
 			plane_boss->setDoc(pDoc);
 			plane_boss->setvelocity(CPoint(0, 0));
 			plane_boss->setacceleration(CPoint(0, 0));
@@ -389,6 +415,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 
 		}
+		if (pDoc->list_airplane_enemy.GetCount() > 4)return;
 		int selection[] = { 4,5,6,7,8,9,10,11,12,13,15 };
 		srand((unsigned)time(NULL));
 		PlaneEmenyGeneral *temp;
@@ -421,9 +448,20 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 
 		}
-	PlaneEmenyGeneral *temp_airplane_enemy = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetHead();
-		if (!temp_airplane_enemy) return;
-		temp_airplane_enemy->fire(&pDoc->list_bullet_general_enemy,0);
+		for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)
+		{
+			POSITION del_airplane_enemy = pos;
+			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
+			if (temp->cooldown_fire < 4000) {
+				temp->cooldown_fire += 100;
+				continue;
+			}
+			temp->fire(&pDoc->list_bullet_general_enemy, 0);
+			temp->cooldown_fire = 0;
+		}
+	//PlaneEmenyGeneral *temp_airplane_enemy = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetHead();
+	//	if (!temp_airplane_enemy) return;
+		
 
 		break;
 	};

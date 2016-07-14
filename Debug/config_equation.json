@@ -4,7 +4,7 @@
 		"num_equation":5,
 		"loop":1,
 		"offset":{
-					"x":150,
+					"x":500,
 					"y":-20
 					},
 		"equation":[
@@ -105,7 +105,7 @@
 	"num_equation":1,
 	"loop":-1,
 	"offset":{
-				"x":0,
+				"x":200,
 				"y":0
 				},
 	
@@ -142,7 +142,7 @@
 	"loop":-1,
 	"velociety":50,
 	"offset":{
-				"x":0,
+				"x":700,
 				"y":0
 				},
 	
@@ -330,7 +330,7 @@
 	"num_equation":1,
 	"loop":-1,
 	"offset":{
-				"x":490,
+				"x":100,
 				"y":0
 				},
 	
@@ -415,7 +415,7 @@
 	"num_equation":1,
 	"loop":0,
 	"offset":{
-				"x":190,
+				"x":900,
 				"y":-60
 				},
 	
@@ -447,7 +447,7 @@
 	"num_equation":1,
 	"loop":0,
 	"offset":{
-				"x":100,
+				"x":500,
 				"y":-60
 				},
 	
@@ -510,7 +510,7 @@
 	"num_equation":1,
 	"loop":1,
 	"offset":{
-				"x":190,
+				"x":400,
 				"y":-60
 				},
 	

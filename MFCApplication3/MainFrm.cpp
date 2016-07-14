@@ -78,7 +78,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 
 	cs.cy = 768; // height
-	cs.cx =512; // width
+	cs.cx =1024; // width
 	cs.y = screen_y_size/10; // top position
 	cs.x = screen_x_size/3; // left position
 	cs.style = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX );

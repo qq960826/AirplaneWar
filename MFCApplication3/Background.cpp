@@ -7,12 +7,14 @@ void Background::setscreensize(CPoint a) {
 void Background::setspeed(int a) {
 	speed = a;
 };
-void Background::init(int index) {
+void Background::init(int a) {
+	index = a;
 	int size_y = mAnimation->image[index]->GetHeight();
 	y1 =0 ;
 	y2 = -size_y;
+	
 };
-void Background::drawbackground(CDC *Pdc, int index) {
+void Background::drawbackground(CDC *Pdc) {
 	int size_y = mAnimation->image[index]->GetHeight();
 	y1 += speed;
 	y2 += speed;
@@ -24,7 +26,8 @@ void Background::drawbackground(CDC *Pdc, int index) {
 		y1 = y2 - size_y;
 		//y2 = 0;
 	}
-	mAnimation->drawimage(Pdc, CPoint(0, y1), index, 0);
-	mAnimation->drawimage(Pdc, CPoint(0, y2), index, 0);
+	
+	mAnimation->drawimage(Pdc, CPoint(0, y1), CPoint(1024,768), index, 0);
+	mAnimation->drawimage(Pdc, CPoint(0, y2), CPoint(1024, 768), index, 0);
 
 };
