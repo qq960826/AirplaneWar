@@ -4,6 +4,10 @@
 // 特定于项目的包含文件
 
 #pragma once
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dsound.lib")
+#pragma comment(lib, "exprtk.lib")
+
 #include <algorithm>
 namespace Gdiplus
 {

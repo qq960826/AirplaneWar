@@ -33,7 +33,6 @@
 #ifndef INCLUDE_EXPRTK_HPP
 #define INCLUDE_EXPRTK_HPP
 
-
 #include <algorithm>
 #include <cctype>
 #include <cmath>

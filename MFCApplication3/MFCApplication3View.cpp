@@ -147,6 +147,16 @@ void CMFCApplication3View::OnInitialUpdate() {
 
 	mgamesetting.mission_killed = 4;
 
+
+	//HRESULT hr = DirectSoundCreate8(NULL, &lpDirectSound, NULL));
+
+	
+	if (!DSlist1.Init())
+		AfxMessageBox(L"声卡初始化失败");
+	CString wave_path=GetModuleDir()+L"\\sound\\";
+	DSlist1.AddNewBuffer(wave_path + "back.wav");  //buffer 0
+	DSlist1.AddNewBuffer(wave_path + "back.wav");  //buffer 0
+	DSlist1.PlayBuffer(0, 1);
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(4, 100, NULL);//generateenemy
 }
@@ -169,16 +179,31 @@ void CMFCApplication3View::FireSetting() {
 
 	if (key_space) {//我方飞机发射导弹
 		int bulletid = 0;
-		if (plane_self.cooldown_fire < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
-			plane_self.cooldown_fire += 100;
-			
+
+		//发射普通导弹
+		if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
+			plane_self.cooldown_fire[bulletid] += 100;
 		}
 		else {
-			plane_self.cooldown_fire = 0;
-			//plane_self.fire(&pDoc->list_bullet_general_self, 0);
+			plane_self.cooldown_fire[bulletid] = 0;
+			plane_self.fire(&pDoc->list_bullet_general_self, 0);
+
 		}
+
+
+		//发射追踪弹
 		if (!pDoc->list_airplane_enemy.IsEmpty()) {
-			plane_self.fire_trace(&pDoc->list_bullet_general_self, (FlyingObject *)pDoc->list_airplane_enemy.GetHead());
+			bulletid = 1;
+
+			if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
+				plane_self.cooldown_fire[bulletid] += 100;
+			}
+			else {
+				plane_self.cooldown_fire[bulletid] = 0;
+				plane_self.fire_trace(&pDoc->list_bullet_general_self, (FlyingObject *)pDoc->list_airplane_enemy.GetHead());
+
+			}
+
 
 		}
 
@@ -187,16 +212,16 @@ void CMFCApplication3View::FireSetting() {
 	if (mgamesetting.bossmode) {//boss发射导弹
 
 		static int boss_bulletid = 0;
-		if (plane_boss->cooldown_fire < plane_boss->mproperty->mbullet_set->cooldown[boss_bulletid]) {
-			plane_boss->cooldown_fire += 100;
+		if (plane_boss->cooldown_fire[boss_bulletid] < plane_boss->mproperty->mbullet_set->cooldown[boss_bulletid]) {
+			plane_boss->cooldown_fire[boss_bulletid] += 100;
 			
 		}
 		else {
-			plane_boss->cooldown_fire = 0;
+			plane_boss->cooldown_fire[boss_bulletid] = 0;
 			plane_boss->fire(&pDoc->list_bullet_general_enemy, 0);
 
 		}
-		boss_bulletid++;
+		//boss_bulletid++;
 		if (boss_bulletid >= plane_boss->mproperty->mbullet_set->num_set) {
 			boss_bulletid = 0;
 		}
@@ -211,12 +236,12 @@ void CMFCApplication3View::FireSetting() {
 			POSITION del_airplane_enemy = pos;
 			int bulletid = 0;
 			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
-			if (temp->cooldown_fire < temp->mproperty->mbullet_set->cooldown[bulletid]) {
-				temp->cooldown_fire += 100;
+			if (temp->cooldown_fire [bulletid]< temp->mproperty->mbullet_set->cooldown[bulletid]) {
+				temp->cooldown_fire[bulletid] += 100;
 				continue;
 			}
-			//temp->fire(&pDoc->list_bullet_general_enemy, bulletid);
-			temp->cooldown_fire = 0;
+			temp->fire(&pDoc->list_bullet_general_enemy, bulletid);
+			temp->cooldown_fire[bulletid] = 0;
 		}
 
 	}
@@ -457,8 +482,6 @@ void CMFCApplication3View::JudgeSetting() {//剧情检测
 			plane_boss->setDoc(pDoc);
 			plane_boss->setequation(pDoc->mmove_equation_set[9]);
 			plane_boss->setvelociety(50);
-			//plane_boss->setvelocity(CPoint(0, 0));
-			//plane_boss->setacceleration(CPoint(0, 0));
 			plane_boss->setoffset(CPoint(150, 150));
 			pDoc->mBackground->setspeed(0);
 			return;

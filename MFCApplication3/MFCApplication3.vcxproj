@@ -134,9 +134,10 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>NOMINMAX;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NOMINMAX;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_SCL_SECURE_NO_WARNINGS /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -224,6 +225,8 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="DSBuffer.h" />
+    <ClInclude Include="DSList.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="exprtk.hpp" />
     <ClInclude Include="FlyingObject.h" />
@@ -245,6 +248,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="DSBuffer.cpp" />
+    <ClCompile Include="DSList.cpp" />
     <ClCompile Include="FlyingObject.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFCApplication3.cpp" />
@@ -261,6 +266,7 @@
     <ClCompile Include="BulletGeneral.cpp" />
     <ClCompile Include="PlaneEmenyGeneral.cpp" />
     <ClCompile Include="PlaneSelf.cpp" />
+    <ClCompile Include="Equation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCApplication3.rc" />

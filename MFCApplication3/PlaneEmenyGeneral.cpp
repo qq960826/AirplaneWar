@@ -2,7 +2,7 @@
 #include "PlaneEmenyGeneral.h"
 PlaneEmenyGeneral::PlaneEmenyGeneral() :PlaneBase() {
 	cooldown_collision = 0;
-	cooldown_fire = 0;
+	//cooldown_fire = 0;
 
 
 };

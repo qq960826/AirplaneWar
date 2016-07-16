@@ -28,6 +28,12 @@
     <Filter Include="头文件\Bullet">
       <UniqueIdentifier>{7e422354-dfce-4cdf-8370-c7235442f083}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\DirectSound">
+      <UniqueIdentifier>{7482161b-67b5-482a-bc15-551c7b0b1d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\DirectSound">
+      <UniqueIdentifier>{9fc9c93e-2535-47ec-9a64-24fa04ff7a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -93,6 +99,12 @@
     <ClInclude Include="BulletTrace.h">
       <Filter>头文件\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="DSBuffer.h">
+      <Filter>头文件\DirectSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DSList.h">
+      <Filter>头文件\DirectSound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication3.cpp">
@@ -130,6 +142,15 @@
     </ClCompile>
     <ClCompile Include="PlaneSelf.cpp">
       <Filter>源文件\Plane</Filter>
+    </ClCompile>
+    <ClCompile Include="DSBuffer.cpp">
+      <Filter>源文件\DirectSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DSList.cpp">
+      <Filter>源文件\DirectSound</Filter>
+    </ClCompile>
+    <ClCompile Include="Equation.cpp">
+      <Filter>源文件\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

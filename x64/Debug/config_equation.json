@@ -139,7 +139,7 @@
 	{
 	"id":2,
 	"num_equation":5,
-	"loop":-1,
+	"loop":4,
 	"velociety":50,
 	"offset":{
 				"x":700,

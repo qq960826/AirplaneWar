@@ -34,11 +34,12 @@ public:
 				return;
 		}
 		float temp1 = atan((float)delta.y/ (float)delta.x)*180/pi1;
-		roataion =360- temp1;
+		//roataion =360- temp1;
 		if (delta.x > 0) {
 			temp_velocity.x = -speed*cos((temp1*pi1) / 180);
 			temp_velocity.y = -speed*sin((temp1*pi1) / 180);
 			velocity = temp_velocity;
+			//::PlaySound(L"hello.wav", NULL, SND_FILENAME);
 		}
 		else {
 			temp_velocity.x = speed*cos((temp1*pi1) / 180);

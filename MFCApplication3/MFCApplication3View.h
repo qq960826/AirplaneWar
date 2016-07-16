@@ -14,6 +14,8 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include "DSBuffer.h"
+#include "DSList.h"
 #pragma once
 using namespace Gdiplus;
 
@@ -34,6 +36,7 @@ class CMFCApplication3View : public CView
 public:
 	int key_space = 0;//1
 public:
+	CDSList DSlist1;
 	void LoadImageFromFile();
 	void InitalizeAirplane();
 	void InitializeEquation();
