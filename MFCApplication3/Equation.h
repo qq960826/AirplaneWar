@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "FlyingObject.h"
-
+#include "exprtk.hpp"
 class Equation {//对参数方程进行
 public:
 	move_equation_set equation_set;

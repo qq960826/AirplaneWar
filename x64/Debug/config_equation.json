@@ -1,0 +1,657 @@
+[
+	{
+		"id":0,
+		"num_equation":5,
+		"loop":1,
+		"offset":{
+					"x":500,
+					"y":-20
+					},
+		"equation":[
+			{
+				"x":{
+						"expression":"0",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					},
+				"y":{
+						"expression":"v",
+						"base":0,
+						"increment":0.1,
+						"target":5
+					}
+			},
+		
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":0,
+						"increment":0.1,
+						"target":3.14
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":0,
+						"increment":0.1,
+						"target":3.14
+					}
+			},
+			{
+				"x":{
+						"expression":"0",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					},
+				"y":{
+						"expression":"v",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					}
+			},
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":3.14,
+						"increment":0.1,
+						"target":9.42
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":3.14,
+						"increment":0.1,
+						"target":9.42
+					}
+			},
+			{
+				"x":{
+						"expression":"0",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					},
+				"y":{
+						"expression":"-v",
+						"base":0,
+						"increment":0.1,
+						"target":2
+					}
+			},
+			{
+				"x":{
+						"expression":"cos((v/100)*t)*v",
+						"base":9.42,
+						"increment":0.1,
+						"target":12.56
+					},
+				
+				"y":{
+						"expression":"sin((v/100)*t)*v",
+						"base":9.42,
+						"increment":0.1,
+						"target":12.56
+					}
+			}
+		
+		
+		]
+	},
+	{
+	"id":1,
+	"num_equation":1,
+	"loop":-1,
+	"offset":{
+				"x":200,
+				"y":0
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0.5*v",
+									"base":0,
+									"increment":0.1,
+									"target":15
+								
+							},
+						"y":{
+									"expression":"9*t",
+									"base":0,
+									"increment":0.1,
+									"target":15
+								
+							}
+					}
+	
+	
+				]
+	
+	},
+	
+	
+	
+	
+	
+	{
+	"id":2,
+	"num_equation":5,
+	"loop":-1,
+	"velociety":50,
+	"offset":{
+				"x":700,
+				"y":0
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"cos((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":9.42477
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":9.42477
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							},
+						"y":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":7.9
+								
+							},
+						"y":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":7.9
+								
+							}
+					},
+					
+					
+					
+					{
+						"x":{
+									"expression":"-cos((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":9.42477
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":9.42477
+								
+							}
+					},
+					
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							},
+						"y":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							}
+					}
+	
+	
+				]
+	
+	},
+	
+	
+	
+	{
+	"id":3,
+	"num_equation":1,
+	"loop":-1,
+	"offset":{
+				"x":-100,
+				"y":0
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":2
+								
+							},
+						"y":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":2
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"cos((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":4.712
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":4.712
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"-cos((v/150)*t)*v",
+									"base":4.712,
+									"increment":0.1,
+									"target":9.42477
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":4.712,
+									"increment":0.1,
+									"target":9.42477
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":4
+								
+							},
+						"y":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":4
+								
+							}
+					}
+					
+
+	
+	
+				]
+	
+	},
+	
+	
+	
+	
+	
+	{
+	"id":4,
+	"num_equation":1,
+	"loop":-1,
+	"offset":{
+				"x":100,
+				"y":0
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":2
+								
+							},
+						"y":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":2
+								
+							}
+					},
+					
+					{
+						"x":{
+									"expression":"-cos((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":4.712
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":4.712
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"cos((v/150)*t)*v",
+									"base":4.712,
+									"increment":0.1,
+									"target":9.42477
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":4.712,
+									"increment":0.1,
+									"target":9.42477
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":7
+								
+							},
+						"y":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":7
+								
+							}
+					}
+					
+
+	
+	
+				]
+	
+	},
+	
+	
+	
+	{
+	"id":5,
+	"num_equation":1,
+	"loop":0,
+	"offset":{
+				"x":900,
+				"y":-60
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							},
+						"y":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							}
+					}
+	
+	
+				]
+	
+	},
+	
+	{
+	"id":6,
+	"num_equation":1,
+	"loop":0,
+	"offset":{
+				"x":500,
+				"y":-60
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							},
+						"y":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							}
+					}
+	
+	
+				]
+	
+	},
+	{
+	"id":7,
+	"num_equation":1,
+	"loop":0,
+	"offset":{
+				"x":100,
+				"y":-60
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							},
+						"y":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":13
+								
+							}
+					}
+	
+	
+				]
+	
+	},
+	
+	{
+	"id":8,
+	"num_equation":1,
+	"loop":1,
+	"offset":{
+				"x":400,
+				"y":-60
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":2.5
+								
+							},
+						"y":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":2.5
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"cos((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":18.8495556
+								
+							},
+						"y":{
+									"expression":"sin((v/150)*t)*v",
+									"base":0,
+									"increment":0.1,
+									"target":18.8495556
+								
+							}
+					}
+
+	
+	
+				]
+	
+	},
+	
+	
+	
+	
+	{
+	"id":9,
+	"num_equation":1,
+	"loop":1,
+	"offset":{
+				"x":190,
+				"y":-60
+				},
+	
+	"equation":[
+					{
+						"x":{
+									"expression":"0",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							},
+						"y":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":6
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							},
+						"y":{
+									"expression":"-0.5*v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							},
+						"y":{
+									"expression":"-0.5*v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							},
+						"y":{
+									"expression":"0.5*v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							}
+					},
+					{
+						"x":{
+									"expression":"-v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							},
+						"y":{
+									"expression":"0.5*v",
+									"base":0,
+									"increment":0.1,
+									"target":3.6
+								
+							}
+					}
+
+	
+	
+				]
+	
+	}
+
+]

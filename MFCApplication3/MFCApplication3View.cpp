@@ -113,7 +113,8 @@ CString GetModuleDir()
 		return CString("");
 	else
 		return csFullPath.Left(nPos);
-}
+};
+
 void CMFCApplication3View::OnInitialUpdate() {
 	CView::OnInitialUpdate();
 	
@@ -125,7 +126,7 @@ void CMFCApplication3View::OnInitialUpdate() {
 	this->GetClientRect(rect);
 
 	pDoc->windowssize = new CPoint(rect.right-rect.left, 666);
-
+	
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 	MemDC.CreateCompatibleDC(NULL);
 	LoadImageFromFile();
@@ -136,16 +137,18 @@ void CMFCApplication3View::OnInitialUpdate() {
 	pDoc->mBackground->setscreensize(CPoint(1024,768));
 	pDoc->mBackground->setspeed(12);
 	pDoc->mBackground->init(0);
-
+	
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
 	plane_self.setproperty(pDoc->mplane_property[0]);
 	plane_self.setDoc(pDoc);
 	plane_self.level = 0;
 	plane_self.exp = 0;
+
+	mgamesetting.mission_killed = 4;
+
 	this->SetTimer(1,100,NULL);//draw
-	this->SetTimer(2, 2000, NULL);//generateenemy
-	this->SetTimer(3, 100, NULL);//generateenemy
+	this->SetTimer(4, 100, NULL);//generateenemy
 }
 CString GetWorkDir()
 {
@@ -158,7 +161,331 @@ CString GetWorkDir()
 	else
 		return csFullPath;
 }
+void CMFCApplication3View::FireSetting() {
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
 
+	if (key_space) {//我方飞机发射导弹
+		int bulletid = 0;
+		if (plane_self.cooldown_fire < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
+			plane_self.cooldown_fire += 100;
+			
+		}
+		else {
+			plane_self.cooldown_fire = 0;
+			//plane_self.fire(&pDoc->list_bullet_general_self, 0);
+		}
+		if (!pDoc->list_airplane_enemy.IsEmpty()) {
+			plane_self.fire_trace(&pDoc->list_bullet_general_self, (FlyingObject *)pDoc->list_airplane_enemy.GetHead());
+
+		}
+
+	
+	}
+	if (mgamesetting.bossmode) {//boss发射导弹
+
+		static int boss_bulletid = 0;
+		if (plane_boss->cooldown_fire < plane_boss->mproperty->mbullet_set->cooldown[boss_bulletid]) {
+			plane_boss->cooldown_fire += 100;
+			
+		}
+		else {
+			plane_boss->cooldown_fire = 0;
+			plane_boss->fire(&pDoc->list_bullet_general_enemy, 0);
+
+		}
+		boss_bulletid++;
+		if (boss_bulletid >= plane_boss->mproperty->mbullet_set->num_set) {
+			boss_bulletid = 0;
+		}
+	
+	}
+
+	if (!pDoc->list_airplane_enemy.IsEmpty()) {
+		
+	
+		for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)
+		{
+			POSITION del_airplane_enemy = pos;
+			int bulletid = 0;
+			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
+			if (temp->cooldown_fire < temp->mproperty->mbullet_set->cooldown[bulletid]) {
+				temp->cooldown_fire += 100;
+				continue;
+			}
+			//temp->fire(&pDoc->list_bullet_general_enemy, bulletid);
+			temp->cooldown_fire = 0;
+		}
+
+	}
+
+
+
+};
+void CMFCApplication3View::JudgeFlyingObject() {
+	static float t = 0;
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	plane_self.calculate_location();
+
+	for (POSITION pos = pDoc->list_bullet_general_self.GetHeadPosition(); pos != NULL;)//我发子弹碰撞销毁
+	{
+		POSITION del = pos;
+		BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos);
+		temp->calculate_location();
+		if (temp->finished) {
+			delete temp;
+			pDoc->list_bullet_general_self.RemoveAt(del);
+			continue;
+		}
+	}
+
+
+	for (POSITION pos = pDoc->list_bullet_general_enemy.GetHeadPosition(); pos != NULL;)//我方战机与敌方子弹碰撞检测
+	{
+		POSITION del = pos;
+		BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_enemy.GetNext(pos);
+		temp->calculate_location();
+		CRect temp_rect = CRect(temp->getlocation());
+		temp_rect.bottom *= temp->property->scale;
+		temp_rect.right *= temp->property->scale;
+
+		if (plane_self.isCollsion(temp_rect)) {
+			plane_self.attack(temp);
+			temp->finished = 1;
+
+			Explosion *temp_explo;
+			temp_explo = new Explosion();
+			temp_explo->setAnimation(pDoc->manimation_explosion);
+			temp_explo->type = 0;
+			temp_explo->setpos(CPoint(temp->pos.x + (temp->objectsize.x*temp->property->scale) / 2, temp->pos.y + (temp->objectsize.y*temp->property->scale)));
+			temp_explo->windowsize = pDoc->windowssize;
+			pDoc->list_explosion.AddTail((CObject*)temp_explo);
+		}
+		if (temp->finished) {
+			delete temp;
+			pDoc->list_bullet_general_enemy.RemoveAt(del);
+			continue;
+		}
+		
+		//temp->Draw(&MemDC);
+	}
+
+
+	for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)
+	{
+		POSITION del_airplane_enemy = pos;
+		PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
+		temp->calculate_location();
+		if (plane_self.isCollsion(temp->getlocation())) {//我方战机与敌方战机碰撞
+			if (temp->cooldown_collision < 3) {//collison colddown
+				temp->cooldown_collision++;
+
+			}
+			else {
+				temp->cooldown_collision = 0;
+				Explosion *temp_explo;
+				plane_self.attack(temp);
+				temp_explo = new Explosion();
+				temp_explo->setAnimation(pDoc->manimation_explosion);
+				temp_explo->setpos(CPoint(plane_self.pos));
+				temp_explo->windowsize = pDoc->windowssize;
+				temp_explo->type = 0;
+				pDoc->list_explosion.AddTail((CObject*)temp_explo);
+			}
+		}
+
+		for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {//我方子弹与敌方战机
+			POSITION del_bullet = pos1;
+			BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
+			temp1->calculate_location();
+			CRect temp_rect = CRect(temp1->getlocation());
+			temp_rect.bottom *= temp1->property->scale;
+			temp_rect.right *= temp1->property->scale;
+
+
+			if (temp->isCollsion(temp_rect)) {
+				temp->attack(temp1);
+				temp1->finished = 1;
+				Explosion *temp_explo;
+				temp_explo = new Explosion();
+				temp_explo->setAnimation(pDoc->manimation_explosion);
+				temp_explo->setpos(CPoint(temp1->pos));
+				temp_explo->windowsize = pDoc->windowssize;
+				temp_explo->type = 0;
+				delete temp1;
+				pDoc->list_bullet_general_self.RemoveAt(del_bullet);
+				pDoc->list_explosion.AddTail((CObject*)temp_explo);
+				//pDoc->list_bullet_general_self.RemoveAll();
+			}
+			
+		}
+		if (temp->hp <= 0) {//敌方战机销毁
+			Explosion *temp_explo;
+			temp_explo = new Explosion();
+			temp_explo->setAnimation(pDoc->manimation_explosion);
+			temp_explo->setpos(CPoint(temp->pos));
+			temp_explo->windowsize = pDoc->windowssize;
+			temp_explo->type = 1;
+			pDoc->list_explosion.AddTail((CObject*)temp_explo);
+
+			temp->finished = 1;
+			mgamesetting.mission_killed++;
+			plane_self.exp += temp->exp;
+		}
+		if (temp->finished) {
+			delete temp;
+
+			pDoc->list_airplane_enemy.RemoveAt(del_airplane_enemy);
+			continue;
+		}		
+		t += 0.1;
+		continue;
+	}
+
+
+
+
+	for (POSITION pos = pDoc->list_explosion.GetHeadPosition(); pos != NULL;)//爆炸销毁
+	{
+		POSITION del = pos;
+		Explosion *temp = (Explosion *)pDoc->list_explosion.GetNext(pos);
+		//temp->calculate_location();
+		if (temp->finished) {
+			pDoc->list_explosion.RemoveAt(del);
+			continue;
+		}
+		
+	}
+
+	if (mgamesetting.bossmode == 1) {//boss 模式检测
+		plane_boss->calculate_location();
+		if (plane_boss->finished == 1)return;
+		//boss与我方飞机碰撞检测
+		if (plane_boss->isCollsion(plane_self.getlocation())) {
+			plane_boss->attack(&plane_self);
+			Explosion *temp_explo;
+			temp_explo = new Explosion();
+			temp_explo->setAnimation(pDoc->manimation_explosion);
+			temp_explo->setpos(CPoint(plane_self.pos));
+			temp_explo->windowsize = pDoc->windowssize;
+			temp_explo->type = 0;
+			pDoc->list_explosion.AddTail((CObject*)temp_explo);
+			if (plane_boss->hp <= 0) {
+				plane_boss->finished = 1;
+				
+			}
+		}
+
+		//boss与我方子弹碰撞检测
+		for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {
+			POSITION del_bullet = pos1;
+			BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
+			//temp1= (BulletGeneral *)
+			CRect temp_rect = CRect(temp1->getlocation());
+			temp_rect.bottom *= temp1->property->scale;
+			temp_rect.right *= temp1->property->scale;
+
+			if (plane_boss->hp <= 0) {
+				plane_boss->finished = 1;
+				break;
+			}
+			if (plane_boss->isCollsion(temp_rect)) {
+				plane_boss->attack(temp1);
+				temp1->finished = 1;
+				Explosion *temp_explo;
+				temp_explo = new Explosion();
+				temp_explo->setAnimation(pDoc->manimation_explosion);
+				temp_explo->setpos(CPoint(temp1->pos));
+				temp_explo->windowsize = pDoc->windowssize;
+				temp_explo->type = 0;
+
+				delete temp1;
+				pDoc->list_bullet_general_self.RemoveAt(del_bullet);
+				pDoc->list_explosion.AddTail((CObject*)temp_explo);
+			}
+		}
+
+
+
+		
+	
+	}
+
+
+
+};
+void CMFCApplication3View::JudgeSetting() {//剧情检测
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	//飞机等级检测
+	if (plane_self.exp > plane_self.mproperty->exp&&plane_self.level != 3) {//飞机升级
+			plane_self.level++;
+			int temp = plane_self.exp;
+			plane_self.setproperty(pDoc->mplane_property[plane_self.level]);
+			plane_self.exp = temp;
+	}
+	//关卡检测(BOSS)
+	if (mgamesetting.bossmode) {
+		if (plane_boss->finished) {
+			if (mgamesetting.mission_present < 3) {
+				mgamesetting.mission_present++;
+				pDoc->mBackground->init(mgamesetting.mission_present);
+			}
+			pDoc->mBackground->setspeed(12);
+			delete plane_boss;
+			plane_boss = NULL;
+			mgamesetting.bossmode = 0;
+
+		}
+		return;
+	}
+
+	//检测是否进入boss模式
+	if (mgamesetting.mission_killed >= mgamesetting.mission_level[mgamesetting.mission_present]) {
+			mgamesetting.bossmode = 1;
+			plane_boss = new PlaneBoss();
+			plane_boss->setAnimation(pDoc->manimation_enemy);
+			plane_boss->setproperty(pDoc->mplane_property[mgamesetting.bossid[mgamesetting.mission_present]]);
+			plane_boss->setDoc(pDoc);
+			plane_boss->setequation(pDoc->mmove_equation_set[9]);
+			plane_boss->setvelociety(50);
+			//plane_boss->setvelocity(CPoint(0, 0));
+			//plane_boss->setacceleration(CPoint(0, 0));
+			plane_boss->setoffset(CPoint(150, 150));
+			pDoc->mBackground->setspeed(0);
+			return;
+	}
+
+	//普通模式产生飞机
+	if (pDoc->list_airplane_enemy.GetCount() < 4) {
+		if (mgamesetting.cooldown_plane_generate[0] < mgamesetting.cooldown_plane_generate[1]) { mgamesetting.cooldown_plane_generate[0] += 100; return; }
+		mgamesetting.cooldown_plane_generate[0] = 0;
+		int selection[] = { 4,5,6,7,8,9,10,11,12,13,15 };
+		srand((unsigned)time(NULL));
+		PlaneEmenyGeneral *temp;
+		temp = new PlaneEmenyGeneral();
+		int option1, option2;
+		option1 = rand() % 11;
+		option2 = rand() % pDoc->mplane_property[selection[option1]]->equation_num;
+
+		temp->setAnimation(pDoc->manimation_enemy);
+		temp->setproperty(pDoc->mplane_property[selection[option1]]);
+		temp->setDoc(pDoc);
+
+		temp->setequation(pDoc->mmove_equation_set[option2]);
+		temp->setvelociety(50);
+		pDoc->list_airplane_enemy.AddTail((CObject*)temp);
+	}
+
+};
 afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	using namespace Gdiplus;
 	long t1 = GetTickCount();
@@ -166,183 +493,46 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	CRect rect;
 	CBitmap MemBitmap;//?????
 	
-	static float t = 0;
+	
 	CMFCApplication3Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 	switch (nIDEvent) {
 	case 1:{
-		//MoveWindow(0, 0, 100, 100, TRUE);
-
-
-
+		int c = 1;
 		this->GetClientRect(rect);
 		MemBitmap.CreateCompatibleBitmap(&DC, rect.Width(), rect.Height());
 		MemDC.SelectObject(&MemBitmap);
 		MemDC.FillSolidRect(rect, RGB(255, 255, 255));
-
-
-
 		pDoc->mBackground->drawbackground(&MemDC);
 		plane_self.draw(&MemDC);
-		// pos;
-		for (POSITION pos = pDoc->list_bullet_general_self.GetHeadPosition(); pos != NULL;)
+		for (POSITION pos = pDoc->list_bullet_general_self.GetHeadPosition(); pos != NULL;)//绘制我方子弹
 		{
 			POSITION del = pos;
 			BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos);
-			if (temp->finished) {
-				pDoc->list_bullet_general_self.RemoveAt(del);
-				continue;
-			}
 			temp->Draw(&MemDC);
 		}
-
-
-
-		for (POSITION pos = pDoc->list_bullet_general_enemy.GetHeadPosition(); pos != NULL;)
+		for (POSITION pos = pDoc->list_bullet_general_enemy.GetHeadPosition(); pos != NULL;)//绘制敌方子弹
 		{
 			POSITION del = pos;
 			BulletGeneral *temp = (BulletGeneral *)pDoc->list_bullet_general_enemy.GetNext(pos);
-			CRect temp_rect = CRect(temp->getlocation());
-			temp_rect.bottom *= temp->property->scale;
-			temp_rect.right *= temp->property->scale;
-			//temp_rect.top += temp_rect.bottom;
-			//temp_rect.left += temp_rect.right / 2;
-			if (plane_self.isCollsion(temp_rect)) {
-				plane_self.attack(temp);
-				temp->finished = 1;
-
-				Explosion *temp_explo;
-				temp_explo = new Explosion();
-				temp_explo->setAnimation(pDoc->manimation_explosion);
-				temp_explo->type = 0;
-				temp_explo->setpos(CPoint(temp->pos.x + (temp->objectsize.x*temp->property->scale) / 2, temp->pos.y + (temp->objectsize.y*temp->property->scale)));
-				temp_explo->windowsize = pDoc->windowssize;
-				pDoc->list_explosion.AddTail((CObject*)temp_explo);
-			}
-			if (temp->finished) {
-				pDoc->list_bullet_general_enemy.RemoveAt(del);
-				continue;
-			}
 			temp->Draw(&MemDC);
 		}
-		for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)
+		for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)//绘制敌方战机
 		{
 			POSITION del_airplane_enemy = pos;
 			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
-
-			if (plane_self.isCollsion(temp->getlocation())) {
-				if (temp->cooldown_collision < 3) {//collison colddown
-					temp->cooldown_collision++;
-
-				}
-				else {
-					temp->cooldown_collision = 0;
-					Explosion *temp_explo;
-					plane_self.attack(temp);
-					temp_explo = new Explosion();
-					temp_explo->setAnimation(pDoc->manimation_explosion);
-					temp_explo->setpos(CPoint(plane_self.pos));
-					temp_explo->windowsize = pDoc->windowssize;
-					temp_explo->type = 0;
-					pDoc->list_explosion.AddTail((CObject*)temp_explo);
-				}
-			}
-
-			for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {
-				POSITION del_bullet = pos1;
-				BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
-				//temp1= (BulletGeneral *)
-				CRect temp_rect = CRect(temp1->getlocation());
-				temp_rect.bottom *= temp1->property->scale;
-				temp_rect.right *= temp1->property->scale;
-
-
-				if (temp->isCollsion(temp_rect)) {
-					//temp->isCollsion(temp1->getlocation());
-					temp->attack(temp1);
-					temp1->finished = 1;
-					Explosion *temp_explo;
-					temp_explo = new Explosion();
-					temp_explo->setAnimation(pDoc->manimation_explosion);
-					temp_explo->setpos(CPoint(temp1->pos));
-					temp_explo->windowsize = pDoc->windowssize;
-					temp_explo->type = 0;
-					pDoc->list_bullet_general_self.RemoveAt(del_bullet);
-					pDoc->list_explosion.AddTail((CObject*)temp_explo);
-					//pDoc->list_bullet_general_self.RemoveAll();
-				}
-
-			}
-			if (temp->hp <= 0) {
-				Explosion *temp_explo;
-				temp_explo = new Explosion();
-				temp_explo->setAnimation(pDoc->manimation_explosion);
-				temp_explo->setpos(CPoint(temp->pos));
-				temp_explo->windowsize = pDoc->windowssize;
-				temp_explo->type = 1;
-				pDoc->list_explosion.AddTail((CObject*)temp_explo);
-
-				temp->finished = 1;
-				mgamesetting.mission_killed++;
-				plane_self.exp += temp->exp;
-
-
-				CString s; s.Format(_T("%d\n"), plane_self.exp);
-				AfxTrace(s);
-			}
-			if (temp->finished) {
-				//delete[] temp1 ;
-
-				pDoc->list_airplane_enemy.RemoveAt(del_airplane_enemy);
-				continue;
-			}
-
-			//pDoc->list_bullet_general_self.RemoveAt(pos)
-			t += 0.1;
-			
-			//temp->setvelocity(CPoint(sin(t)*20,cos(t)*20));
 			temp->draw(&MemDC);
 			continue;
 		}
-		for (POSITION pos = pDoc->list_explosion.GetHeadPosition(); pos != NULL;)
+		for (POSITION pos = pDoc->list_explosion.GetHeadPosition(); pos != NULL;)//绘制爆炸
 		{
 			POSITION del = pos;
 			Explosion *temp = (Explosion *)pDoc->list_explosion.GetNext(pos);
-
-			temp->Draw(&MemDC);
-			if (temp->finished) {
-				pDoc->list_explosion.RemoveAt(del);
-				continue;
-			}
 			temp->Draw(&MemDC);
 		}
 		if (plane_boss != NULL) {
-			for (POSITION pos1 = pDoc->list_bullet_general_self.GetHeadPosition(); pos1 != NULL;) {
-				POSITION del_bullet = pos1;
-				BulletGeneral *temp1 = (BulletGeneral *)pDoc->list_bullet_general_self.GetNext(pos1);
-				//temp1= (BulletGeneral *)
-				CRect temp_rect = CRect(temp1->getlocation());
-				temp_rect.bottom *= temp1->property->scale;
-				temp_rect.right *= temp1->property->scale;
-
-
-				if (plane_boss->isCollsion(temp_rect)) {
-					plane_boss->attack(temp1);
-					temp1->finished = 1;
-					Explosion *temp_explo;
-					temp_explo = new Explosion();
-					temp_explo->setAnimation(pDoc->manimation_explosion);
-					temp_explo->setpos(CPoint(temp1->pos));
-					temp_explo->windowsize = pDoc->windowssize;
-					temp_explo->type = 0;
-					pDoc->list_bullet_general_self.RemoveAt(del_bullet);
-					pDoc->list_explosion.AddTail((CObject*)temp_explo);
-				}
-			}
-
-
 			plane_boss->draw(&MemDC);
 		}
 
@@ -371,98 +561,14 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 		long t2 = GetTickCount();//程序段结束后取得系统运行时间(ms) 　　
 		CString str;
 		str.Format(L"time:%dms\n", t2 - t1);//前后之差即 程序运行时间 　　
-		AfxTrace(str);//获取系统运行时间 　　
+		//AfxTrace(str);//获取系统运行时间 　　
 		break;
 	}
-	case 2: {//关卡设置
-		if (plane_self.exp > plane_self.mproperty->exp&&plane_self.level!=3) {//飞机升级
-			plane_self.level++;
-			plane_self.setproperty(pDoc->mplane_property[plane_self.level]);
 
-			//plane_self.setDoc(pDoc);
-		}
-		//if()
-		
-		if (mgamesetting.bossmode==1&& plane_boss!=NULL) {//
-			if (plane_boss->hp <= 0) {
-				delete plane_boss;
-				plane_boss = NULL;
-				mgamesetting.bossmode = 0;
-				if (mgamesetting.mission_present < 3) {
-					mgamesetting.mission_present++;
-					pDoc->mBackground->init(mgamesetting.mission_present);
-				}
-			}
-
-			else 
-			{
-				return;
-			}
-			
-
-		}
-		if (mgamesetting.mission_killed >= mgamesetting.mission_level[mgamesetting.mission_present]) {
-			mgamesetting.bossmode = 1;
-			plane_boss= new PlaneBoss();
-			plane_boss->setAnimation(pDoc->manimation_enemy);
-			plane_boss->setproperty(pDoc->mplane_property[mgamesetting.bossid[mgamesetting.mission_present]]);
-			plane_boss->setDoc(pDoc);
-			plane_boss->setvelocity(CPoint(0, 0));
-			plane_boss->setacceleration(CPoint(0, 0));
-			plane_boss->setpos(CPoint(150, 150));
-			return;
-
-
-
-		}
-		if (pDoc->list_airplane_enemy.GetCount() > 4)return;
-		int selection[] = { 4,5,6,7,8,9,10,11,12,13,15 };
-		srand((unsigned)time(NULL));
-		PlaneEmenyGeneral *temp;
-		temp = new PlaneEmenyGeneral();
-		int option1, option2;
-		option1 = rand() % 11;
-		option2 = rand() % pDoc->mplane_property[selection[option1]]->equation_num;
-
-		temp->setAnimation(pDoc->manimation_enemy);
-		temp->setproperty(pDoc->mplane_property[selection[option1]]);
-		temp->setDoc(pDoc);
-		//temp->setvelocity(CPoint(0, 0));
-		//temp->setacceleration(CPoint(0, 0));
-		//temp->setoffset(CPoint(150, 150));
-		temp->setequation(pDoc->mmove_equation_set[option2]);
-		temp->setvelociety(50);
-		//temp->setHP(10);
-		//temp->setAttack(1);
-
-		pDoc->list_airplane_enemy.AddTail((CObject*)temp);
-
-
-		//pDoc->list_airplane_enemy.AddTail((CObject*)temp);
-
-
-		break; }
-	case 3://ennemy launch the bullet
-		if (pDoc->list_airplane_enemy.IsEmpty()) {
-			return;
-
-
-		}
-		for (POSITION pos = pDoc->list_airplane_enemy.GetHeadPosition(); pos != NULL;)
-		{
-			POSITION del_airplane_enemy = pos;
-			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
-			if (temp->cooldown_fire < 4000) {
-				temp->cooldown_fire += 100;
-				continue;
-			}
-			temp->fire(&pDoc->list_bullet_general_enemy, 0);
-			temp->cooldown_fire = 0;
-		}
-	//PlaneEmenyGeneral *temp_airplane_enemy = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetHead();
-	//	if (!temp_airplane_enemy) return;
-		
-
+	case 4:
+		JudgeSetting();
+		JudgeFlyingObject();
+		FireSetting();
 		break;
 	};
 
@@ -502,7 +608,7 @@ void CMFCApplication3View::InitializeEquation() {
 
 		for (int j = 0; j < temp_equation_num; j++) {
 			auto temp_json_equation = json_fromfile[i]["equation"][j];
-			auto aa = temp_json_equation.dump();
+			//auto aa = temp_json_equation.dump();
 			temp_plane->move_equation[j] = new move_equation;
 			temp_plane->move_equation[j]->x.base = temp_json_equation["x"]["base"];
 			temp_plane->move_equation[j]->x.increment = temp_json_equation["x"]["increment"];
@@ -577,6 +683,8 @@ void CMFCApplication3View::InitalizeAirplane() {
 		temp_plane->mbullet_set->id = json_bullet_set_all["id"];
 		auto json_bullet_set_bullet = json_bullet_set_all["bullet"];
 		temp_plane->mbullet_set->num_set = json_bullet_set_bullet.size();
+		temp_plane->mbullet_set->cooldown = new int[temp_plane->mbullet_set->num_set+1];
+		
 		temp_plane->mbullet_set->bullet = new struct bullet_property**[json_bullet_set_bullet.size()+1];
 		//configure bullet property
 		
@@ -584,7 +692,12 @@ void CMFCApplication3View::InitalizeAirplane() {
 		for (int j = 0; j < json_bullet_set_all.size(); j++) {//traverse single set
 			json json_bullet_set_each = json_bullet_set_bullet[j];
 			temp_plane->mbullet_set->bullet[j] = new struct bullet_property*[json_bullet_set_each["bullet_property"].size()+1];
-			
+			if (!json_bullet_set_each["cooldown"].is_null()) {
+				temp_plane->mbullet_set->cooldown[j] = json_bullet_set_each["cooldown"];
+			}
+			else {
+				temp_plane->mbullet_set->cooldown[j] = 2000;
+			}
 			if (!j)temp_plane->mbullet_set->num_each = new int [json_bullet_set_each["bullet_property"].size()+1];
 
 			temp_plane->mbullet_set->num_each[j] = json_bullet_set_each["bullet_property"].size();
@@ -726,7 +839,7 @@ void CMFCApplication3View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nChar) {
 	case VK_SPACE:
-		plane_self.fire(&pDoc->list_bullet_general_self,0);
+		key_space = 1;
 		break;
 	case VK_LEFT:
 		plane_self.velocity.x = -10;
@@ -750,7 +863,7 @@ void CMFCApplication3View::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nChar) {
 	case VK_SPACE:
-		//plane_self.velocity.y = 0;
+		key_space = 0;
 		break;
 	case VK_LEFT:
 		plane_self.velocity.x = 0;

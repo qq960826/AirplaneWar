@@ -7,9 +7,7 @@ public:
 	move_equation_set equation_set;
 	Equation mequation;
 	CPoint offset;
-	int cooldown_fire;
 
-	int cooldown_collision ;
 	PlaneEmenyGeneral();
 	void setAttack(int) ;
 	void setHP(int);

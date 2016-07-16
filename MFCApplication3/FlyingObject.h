@@ -4,10 +4,10 @@
 #include "atltypes.h"
 #include "Animation.h"
 #include "MFCApplication3Doc.h"
-#include "exprtk.hpp"
+
 
 #include <string>
-#define pi 3.1415926
+#define pi1 3.1415926
 struct move_equation_single {
 	std::string equation;
 	float base;
@@ -42,6 +42,7 @@ struct bullet_set {
 	int num_set;
 	int *num_each;
 	int *exp_each;
+	int *cooldown;
 	bullet_property ***bullet;
 };
 struct plane_property {
@@ -73,10 +74,10 @@ public:
 public:
 	void setattack(int a);
 	void edgedetect();
-	virtual void Onedgeleft() = 0;
-	virtual void Onedgetop() = 0;
-	virtual void Onedgeright() = 0;
-	virtual void Onedgebottom() = 0;
+	virtual void Onedgeleft() {};
+	virtual void Onedgetop() {};
+	virtual void Onedgeright() {};
+	virtual void Onedgebottom() {};
 	virtual void calculate_location();
 	void setAnimation(Animation *a);
 	FlyingObject() :pos(0, 0), velocity(0, 0), acceleration(0, 0) {};

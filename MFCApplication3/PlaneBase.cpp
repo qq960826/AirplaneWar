@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "PlaneBase.h"
-
+#include "BulletTrace.h"
 void PlaneBase::draw(CDC *pDC) {
-	this->calculate_location();
+	//this->calculate_location();
 	mAnimation->drawimage(pDC, this->pos, mproperty->pictureid, 0);
 	draw_hp(pDC);
 };
@@ -14,7 +14,6 @@ void PlaneBase::fire(CObList *bullet,int id) {
 		mbullet->loadAnimation(pDoc->manimation_bullet);
 		bullet->AddHead((CObject*)mbullet);
 	}
-
 
 
 };

@@ -7,9 +7,10 @@ void BulletGeneral::loadAnimation(Animation *a) {
 	pos = pos + *property->offset;
 };
 void BulletGeneral:: Draw(CDC *pDoc) {
-	calculate_location();
-	mAnimation->setrotation(property->rotation);
+	//calculate_location();
+	mAnimation->setrotation(roataion);
 	mAnimation->setscale(property->scale);
 	mAnimation->drawimage(pDoc, pos, property->pictureid, 0);
+
 
 };

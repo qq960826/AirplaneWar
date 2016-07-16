@@ -1,8 +1,8 @@
 #pragma once
-#include "PlaneBase.h"
-class PlaneBoss :public PlaneBase {
+#include "PlaneEmenyGeneral.h"
+class PlaneBoss :public PlaneEmenyGeneral {
 public:
-	PlaneBoss() :PlaneBase() {};
+	PlaneBoss() :PlaneEmenyGeneral() {};
 	void Onedgeleft() {};
 	void Onedgetop() {};
 	void Onedgeright() {};

@@ -6,7 +6,8 @@ class BulletGeneral:public FlyingObject {
 protected:
 	
 public:
-	//int attack;
+	int speed;
+	float roataion;
 	bullet_property *property;
 	BulletGeneral(CPoint mpos,CPoint mvelocity ,bullet_property *mproperty):FlyingObject(mpos,mvelocity), property(mproperty){
 
@@ -14,8 +15,10 @@ public:
 	};
 	BulletGeneral(CPoint mpos, bullet_property *mproperty) :FlyingObject(mpos), property(mproperty) {
 		CPoint temp_velocity;
-		temp_velocity.x = -mproperty->speed*sin((mproperty->rotation*pi) / 180);
-		temp_velocity.y = mproperty->speed*cos((mproperty->rotation*pi) / 180);
+		speed = mproperty->speed;
+		roataion = mproperty->rotation;
+		temp_velocity.x = -speed*sin((roataion*pi1) / 180);
+		temp_velocity.y = speed*cos((roataion*pi1) / 180);
 
 		mattack = property->attack;
 		velocity = temp_velocity;

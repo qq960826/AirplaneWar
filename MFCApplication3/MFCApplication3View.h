@@ -22,8 +22,8 @@ struct gamesetting {
 	bool bossmode = 0;//boss模式
 	int mission_level[4] = { 5,50,90,140 };//升级杀敌数要求
 	int bossid [4] = {16,17,18,19};//bossid
-	int mission_killed = 0;//以杀普通敌机数目
-	
+	int mission_killed = 0;//已杀普通敌机数目
+	int cooldown_plane_generate[2] = {0,2000};//第一值为状态量，第二个值为目标量
 
 
 
@@ -32,6 +32,9 @@ struct gamesetting {
 class CMFCApplication3View : public CView
 {
 public:
+	int key_space = 0;//1
+public:
+	void LoadImageFromFile();
 	void InitalizeAirplane();
 	void InitializeEquation();
 public:
@@ -42,8 +45,7 @@ protected: // 仅从序列化创建
 	CMFCApplication3View();
 	DECLARE_DYNCREATE(CMFCApplication3View)
 
-public:
-	void LoadImageFromFile();
+	
 
 public:
 	GdiplusStartupInput gdiplusStartupInput;
@@ -52,6 +54,12 @@ public://双缓冲
 	CBitmap MemBitmap;//双缓存
 	CDC MemDC;//双缓存、
 	CBrush m_brush;//刷背景
+
+public:
+	//游戏控制
+	void JudgeFlyingObject();//判断飞行目标
+	void JudgeSetting();//剧情检测
+	void FireSetting();//子弹发射剧情
 
 public:
 	gamesetting mgamesetting;

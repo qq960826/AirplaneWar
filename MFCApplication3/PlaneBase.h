@@ -6,6 +6,8 @@ class PlaneBase:public FlyingObject {
 
 public :
 	int exp;
+	int cooldown_fire=0;
+	int cooldown_collision;
 	plane_property *mproperty;
 	PlaneBase() :FlyingObject() {};
 	void draw(CDC *);

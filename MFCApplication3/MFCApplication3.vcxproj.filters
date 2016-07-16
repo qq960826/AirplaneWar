@@ -25,6 +25,9 @@
     <Filter Include="源文件\Plane">
       <UniqueIdentifier>{b1a3e5fd-7a8e-4424-b957-a1342d15c464}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Bullet">
+      <UniqueIdentifier>{7e422354-dfce-4cdf-8370-c7235442f083}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,9 +63,6 @@
     <ClInclude Include="Background.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
-    <ClInclude Include="BulletGeneral.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>头文件\System</Filter>
     </ClInclude>
@@ -86,6 +86,12 @@
     </ClInclude>
     <ClInclude Include="PlaneBoss.h">
       <Filter>头文件\Plane</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletGeneral.h">
+      <Filter>头文件\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletTrace.h">
+      <Filter>头文件\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

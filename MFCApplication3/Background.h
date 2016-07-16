@@ -14,5 +14,6 @@ public:
 	void setspeed(int a);
 	void init(int index);
 	void drawbackground(CDC *Pdc);
+	void drawproperty(CDC *Pdc);
 
 };
