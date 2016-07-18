@@ -155,7 +155,14 @@ void CMFCApplication3View::OnInitialUpdate() {
 		AfxMessageBox(L"声卡初始化失败");
 	CString wave_path=GetModuleDir()+L"\\sound\\";
 	DSlist1.AddNewBuffer(wave_path + "back.wav");  //buffer 0
-	DSlist1.AddNewBuffer(wave_path + "back.wav");  //buffer 0
+	
+	for (int i = 0; i < 30; i++) {
+		DSlist1.AddNewBuffer(wave_path + "explosion.wav");  //buffer 0
+	}
+	for (int i = 0; i < 30; i++) {
+		DSlist1.AddNewBuffer(wave_path + "fire.wav");  //buffer 0
+	}
+	DSlist1.AddNewBuffer(wave_path + "game_achievement.wav");  //buffer 0
 	DSlist1.PlayBuffer(0, 1);
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(4, 100, NULL);//generateenemy
@@ -179,14 +186,17 @@ void CMFCApplication3View::FireSetting() {
 
 	if (key_space) {//我方飞机发射导弹
 		int bulletid = 0;
+		int succees = 0;
 
 		//发射普通导弹
 		if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
 			plane_self.cooldown_fire[bulletid] += 100;
+
 		}
 		else {
 			plane_self.cooldown_fire[bulletid] = 0;
 			plane_self.fire(&pDoc->list_bullet_general_self, 0);
+			succees = 1;
 
 		}
 
@@ -201,9 +211,17 @@ void CMFCApplication3View::FireSetting() {
 			else {
 				plane_self.cooldown_fire[bulletid] = 0;
 				plane_self.fire_trace(&pDoc->list_bullet_general_self, (FlyingObject *)pDoc->list_airplane_enemy.GetHead());
-
+				succees = 1;
 			}
-
+			if (succees) {
+				DSlist1.PlayBuffer(music_fire_index, 0);
+				music_fire_index++;
+				if (music_fire_index >= 61) {
+					music_fire_index = 31;
+					
+				}
+			
+			}
 
 		}
 
@@ -335,6 +353,12 @@ void CMFCApplication3View::JudgeFlyingObject() {
 
 
 			if (temp->isCollsion(temp_rect)) {
+
+				DSlist1.PlayBuffer(music_explosion_index, 0);
+				music_explosion_index++;
+				if (music_explosion_index >= 31) {
+					music_explosion_index = 1;
+				}
 				temp->attack(temp1);
 				temp1->finished = 1;
 				Explosion *temp_explo;
@@ -393,6 +417,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 		if (plane_boss->finished == 1)return;
 		//boss与我方飞机碰撞检测
 		if (plane_boss->isCollsion(plane_self.getlocation())) {
+
 			plane_boss->attack(&plane_self);
 			Explosion *temp_explo;
 			temp_explo = new Explosion();
@@ -417,10 +442,16 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			temp_rect.right *= temp1->property->scale;
 
 			if (plane_boss->hp <= 0) {
+				DSlist1.PlayBuffer(61, 0);
 				plane_boss->finished = 1;
 				break;
 			}
 			if (plane_boss->isCollsion(temp_rect)) {
+				DSlist1.PlayBuffer(music_explosion_index, 0);
+				music_explosion_index++;
+				if (music_explosion_index >= 31) {
+					music_explosion_index = 1;
+				}
 				plane_boss->attack(temp1);
 				temp1->finished = 1;
 				Explosion *temp_explo;

@@ -34,6 +34,8 @@ struct gamesetting {
 class CMFCApplication3View : public CView
 {
 public:
+	int music_explosion_index = 1;
+	int music_fire_index = 31;
 	int key_space = 0;//1
 public:
 	CDSList DSlist1;

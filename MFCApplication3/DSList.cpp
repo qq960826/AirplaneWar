@@ -132,7 +132,7 @@ BOOL CDSList::PlayBuffer(int nBuffer, DWORD dwFlags)
 	// Retrieve a pointer
 	CDSBuffer* DSBuffer = (CDSBuffer *)GetAt(Pos);
 
-	// Try playing it
+
 	return DSBuffer->PlaySound(dwFlags);
 }
 
