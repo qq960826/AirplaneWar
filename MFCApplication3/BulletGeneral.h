@@ -9,6 +9,7 @@ public:
 	int speed;
 	float roataion;
 	bullet_property *property;
+	BulletGeneral() {};
 	BulletGeneral(CPoint mpos,CPoint mvelocity ,bullet_property *mproperty):FlyingObject(mpos,mvelocity), property(mproperty){
 
 
@@ -25,6 +26,7 @@ public:
 
 
 	};
+	void setproperty(bullet_property *a) { property = a; }
 	void loadAnimation(Animation *a);
 	void Draw(CDC *pDoc);
 	void rotate(float a) { 
@@ -46,10 +48,7 @@ public:
 		if(pos.y>objectsize.y+windowsize->y)finished = 1;
 		
 	};
-	CRect getlocation() {
-		
-		return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
-	};
+
 	void setpictureid(int a) {
 		property->pictureid = a;
 	}

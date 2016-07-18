@@ -19,12 +19,15 @@ public://图片资源
 	Animation *manimation_explosion;
 	Animation *manimation_bullet;
 	Animation *manimation_hp;
+	Animation *manimation_item;
+
 
 	Background *mBackground;
 
 
 	struct plane_property **mplane_property;//飞机参数
-	struct move_equation_set **mmove_equation_set;
+	struct move_equation_set **mmove_equation_set;//轨迹方程
+	struct item_properity **mitem_properity;//物资类
 
 
 
@@ -36,9 +39,10 @@ public:
 public://DoubleLinkedList
 	CObList list_bullet_general_self;
 	CObList list_bullet_general_enemy;
+	CObList list_bullet_laser_self;
 	CObList list_airplane_enemy;
 	CObList list_explosion;
-
+	CObList list_item;//物资类
 protected: // 仅从序列化创建
 	CMFCApplication3Doc();
 	DECLARE_DYNCREATE(CMFCApplication3Doc)

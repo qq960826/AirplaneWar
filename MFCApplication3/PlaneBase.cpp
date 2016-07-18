@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "PlaneBase.h"
 #include "BulletTrace.h"
-void PlaneBase::draw(CDC *pDC) {
+void PlaneBase::Draw(CDC *pDC) {
 	//this->calculate_location();
 	mAnimation->drawimage(pDC, this->pos, mproperty->pictureid, 0);
 	draw_hp(pDC);

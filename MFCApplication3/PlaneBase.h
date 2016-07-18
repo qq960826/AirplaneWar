@@ -10,7 +10,7 @@ public :
 	int cooldown_collision;
 	plane_property *mproperty;
 	PlaneBase() :FlyingObject() {};
-	void draw(CDC *);
+	void Draw(CDC *);
 	void fire(CObList *bullet,int bulletid);
 	CRect getlocation();
 	bool isCollsion(CRect a);

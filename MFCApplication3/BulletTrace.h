@@ -52,7 +52,7 @@ public:
 	void calculate_location() {
 		calculate_trace();
 		//velocity += acceleration;
-		pos +=velocity;
+		pos += velocity;
 		edgedetect();
 	}
 

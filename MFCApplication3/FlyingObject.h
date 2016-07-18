@@ -8,6 +8,15 @@
 
 #include <string>
 #define pi1 3.1415926
+struct item_properity {
+	int id;
+	int type;
+	int value;
+	int num_picture;
+	float scale;
+	int *pictureid;
+
+};
 struct move_equation_single {
 	std::string equation;
 	float base;
@@ -79,12 +88,12 @@ public:
 	virtual void Onedgeright() {};
 	virtual void Onedgebottom() {};
 	virtual void calculate_location();
+	virtual void Draw(CDC *pDC)=0;
 	void setAnimation(Animation *a);
 	FlyingObject() :pos(0, 0), velocity(0, 0), acceleration(0, 0) {};
 	FlyingObject(CPoint a, CPoint b, Animation*c) :pos(a), velocity(b), mAnimation(c){};
 	FlyingObject(CPoint a, CPoint b) :pos(a), velocity(b) {};
 	FlyingObject(CPoint a) :pos(a) {};
-	void draw(CDC *);
 	void setpos(CPoint a);
 	void setvelocity(CPoint a);
 	void setDoc(CMFCApplication3Doc* a) ;
@@ -93,4 +102,8 @@ public:
 	boolean isCollsionWithRect(CRect b);
 	void setrotation(int angle);
 	void attack(FlyingObject *a);
+	CRect getlocation() {
+
+		return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
+	};
 };

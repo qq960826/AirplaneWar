@@ -6,9 +6,11 @@
 #include "Animation.h"
 #include "PlaneSelf.h"
 #include "BulletGeneral.h"
+#include "BulletLaser.h"
 #include "PlaneEmenyGeneral.h"
 #include "Explosion.h"
 #include "PlaneBoss.h"
+#include "Item.h"
 //#pragma comment( lib, "json.lib" )
 #include "json.hpp"
 #include <string>
@@ -40,8 +42,48 @@ public:
 public:
 	CDSList DSlist1;
 	void LoadImageFromFile();
+	void InitializeItem();
 	void InitalizeAirplane();
 	void InitializeEquation();
+
+	void CreateExplosion(CPoint pos,int type) {
+		CMFCApplication3Doc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
+		Explosion *temp_explo;
+		temp_explo = new Explosion();
+		temp_explo->setAnimation(pDoc->manimation_explosion);
+		temp_explo->setpos(pos);
+		temp_explo->windowsize = pDoc->windowssize;
+		temp_explo->type = type;
+		pDoc->list_explosion.AddTail((CObject*)temp_explo);
+	
+	};
+	void DestroyFinishedObject(CObList *a) {
+
+		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//我发子弹碰撞销毁
+		{
+			POSITION del = pos;
+			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
+			temp->calculate_location();
+			if (temp->finished) {
+				delete temp;
+				a->RemoveAt(del);
+				continue;
+			}
+		}
+	
+	}
+	void DrawObject(CObList *a) {
+
+		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
+		{
+			POSITION del = pos;
+			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
+			temp->Draw(&MemDC);
+		}
+	}
 public:
 	PlaneSelf plane_self;
 	PlaneBoss *plane_boss=NULL;

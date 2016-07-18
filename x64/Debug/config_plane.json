@@ -58,8 +58,25 @@
 							"scale": 0.6
 						}
 					]
+				},
+				{
+					"num_each": 1,
+					"cooldown":100,
+					"bullet_property": [
+						{
+							"id": 2,
+							"pictureid": 112,
+							"attack": 5,
+							"offset": [
+								50,
+								-30
+							],
+							"rotation": 0,
+							"speed": -22,
+							"scale": 0.6
+						}
+					]
 				}
-				
 			]
 		}
 	},

@@ -245,6 +245,8 @@
     <ClInclude Include="Equation.h" />
     <ClInclude Include="PlaneBoss.h" />
     <ClInclude Include="BulletTrace.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="BulletLaser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />

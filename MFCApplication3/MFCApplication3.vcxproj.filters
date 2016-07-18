@@ -105,6 +105,12 @@
     <ClInclude Include="DSList.h">
       <Filter>头文件\DirectSound</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletLaser.h">
+      <Filter>头文件\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MFCApplication3.cpp">
