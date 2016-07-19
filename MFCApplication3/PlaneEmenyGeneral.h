@@ -15,22 +15,10 @@ public:
 	void Onedgetop() ;
 	void Onedgeright();
 	void Onedgebottom();
-	void setequation(move_equation_set *a) {
-		equation_set = *a;
-		mequation.loadequation(equation_set);
-		mequation.setoffset(&equation_set.offset);
-	};
-	void setoffset(CPoint a) {
-		offset = a;
-	};
-	void calculate_location() {
-		mequation.calculate();
-		pos = mequation.getresult();
-		edgedetect();
-		
-	
-	};
-	void setvelociety(float a) { mequation.setvelociety(a); }
+	void setequation(move_equation_set *a);
+	void setoffset(CPoint a);
+	void calculate_location();
+	void setvelociety(float a);
 	
 
 };

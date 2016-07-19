@@ -3,7 +3,10 @@
 #include "resource.h"
 #include "FlyingObject.h"
 
-
+FlyingObject::FlyingObject() :pos(0, 0), velocity(0, 0), acceleration(0, 0) {};
+FlyingObject::FlyingObject(CPoint a, CPoint b, Animation*c) :pos(a), velocity(b), mAnimation(c) {};
+FlyingObject::FlyingObject(CPoint a, CPoint b) :pos(a), velocity(b) {};
+FlyingObject::FlyingObject(CPoint a) :pos(a) {};
 void FlyingObject::calculate_location() {
 	
 	velocity += acceleration;
@@ -83,4 +86,8 @@ void FlyingObject::edgedetect() {
 void FlyingObject::setAnimation(Animation *a) {
 
 	mAnimation = a;
+};
+CRect FlyingObject::getlocation() {
+
+	return CRect(pos.x, pos.y, objectsize.x, objectsize.y);
 };

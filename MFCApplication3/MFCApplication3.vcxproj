@@ -247,12 +247,16 @@
     <ClInclude Include="BulletTrace.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="BulletLaser.h" />
+    <ClInclude Include="Audio.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DSBuffer.cpp" />
     <ClCompile Include="DSList.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="FlyingObject.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MFCApplication3.cpp" />
     <ClCompile Include="MFCApplication3Doc.cpp" />
@@ -269,6 +273,8 @@
     <ClCompile Include="PlaneEmenyGeneral.cpp" />
     <ClCompile Include="PlaneSelf.cpp" />
     <ClCompile Include="Equation.cpp" />
+    <ClCompile Include="BulletLaser.cpp" />
+    <ClCompile Include="BulletTrace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MFCApplication3.rc" />

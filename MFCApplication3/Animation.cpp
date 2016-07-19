@@ -75,3 +75,6 @@ Animation::~Animation() {
 };
 void  Animation::setrotation(float angle) { rotation = angle; }
 CPoint  Animation::getimagesize(int image_index, int animation_index) { return CPoint(slice_picture[image_index][animation_index].right, slice_picture[image_index][animation_index].bottom); }
+CPoint Animation::getsize(int image_index, int animation_index) {
+	return CPoint(slice_picture[image_index][animation_index].right*scale, slice_picture[image_index][animation_index].bottom*scale);
+}

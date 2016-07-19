@@ -28,6 +28,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication3View, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
+	ON_COMMAND(ID_NEW_GAME, &CMFCApplication3View::OnNewGame)
 END_MESSAGE_MAP()
 
 // CMFCApplication3View 构造/析构
@@ -131,10 +132,13 @@ void CMFCApplication3View::OnInitialUpdate() {
 	MemDC.CreateCompatibleDC(NULL);
 
 	//加载各种配置文件
-	LoadImageFromFile();
-	InitalizeAirplane();
-	InitializeEquation();
-	InitializeItem();
+	LoadImageFromFile();//加载图片
+	InitalizeAirplane();//加载飞机配置文件
+	InitializeEquation();//加载轨迹方程
+	InitializeItem();//加载奖励
+	mAudio.Init(GetModuleDir());//加载声音
+	mAudio.PlayBackground();
+
 	pDoc->mBackground = new Background();
 	pDoc->mBackground->mAnimation = pDoc->manimation_background;
 	pDoc->mBackground->setscreensize(CPoint(1024,768));
@@ -143,42 +147,18 @@ void CMFCApplication3View::OnInitialUpdate() {
 	
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
-	plane_self.setproperty(pDoc->mplane_property[0]);
 	plane_self.setDoc(pDoc);
+	plane_self.setproperty(pDoc->mplane_property[0]);
 	plane_self.level = 0;
 	plane_self.exp = 0;
 
-	mgamesetting.mission_killed = 4;
+	mgamesetting.mission_killed = 0;
 
 
 	//HRESULT hr = DirectSoundCreate8(NULL, &lpDirectSound, NULL));
 
 	
-	if (!DSlist1.Init())
-		AfxMessageBox(L"声卡初始化失败");
-	CString wave_path=GetModuleDir()+L"\\sound\\";
-	DSlist1.AddNewBuffer(wave_path + "back.wav");  //buffer 0
-	
-	for (int i = 0; i < 30; i++) {
-		DSlist1.AddNewBuffer(wave_path + "explosion.wav");  //buffer 0
-	}
-	for (int i = 0; i < 30; i++) {
-		DSlist1.AddNewBuffer(wave_path + "fire.wav");  //buffer 0
-	}
-	DSlist1.AddNewBuffer(wave_path + "bossdie.wav");  //buffer 0
-	for (int i = 0; i < 10; i++) {
-		DSlist1.AddNewBuffer(wave_path + "pickup.wav");  //buffer 0
-	}
-	for (int i = 0; i < 10; i++) {
-		DSlist1.AddNewBuffer(wave_path + "collision_plane.wav");  //buffer 0
-	}
-	for (int i = 0; i < 5; i++) {
-		DSlist1.AddNewBuffer(wave_path + "generalplanedie.wav");  //buffer 0
-	}
-	for (int i = 0; i < 30; i++) {
-		DSlist1.AddNewBuffer(wave_path + "laser.wav");  //buffer 0
-	}
-	DSlist1.PlayBuffer(0, 1);
+
 	this->SetTimer(1,100,NULL);//draw
 	this->SetTimer(4, 100, NULL);//generateenemy
 }
@@ -228,7 +208,7 @@ void CMFCApplication3View::FireSetting() {
 			}
 			else {
 				plane_self.cooldown_fire[bulletid] = 0;
-				AudioLaser();
+				mAudio.PlayLaser();
 				//plane_self.fire(&pDoc->list_bullet_general_self, 0);
 				//succees = 1;
 
@@ -250,7 +230,7 @@ void CMFCApplication3View::FireSetting() {
 				succees = 1;
 			}
 			if (succees) {
-				AudioExplosion();
+				mAudio.PlayExplosion();
 			
 			}
 
@@ -330,7 +310,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 		temp_rect.right *= temp->property.scale;
 		if (plane_self.isCollsion(temp_rect)) {
 			plane_self.getitem(*temp);
-			AudioPickup();
+			mAudio.PlayPickup();
 			temp->finished = 1;
 		}
 
@@ -349,7 +329,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			if(plane_self.mcooldown.protection<=0)plane_self.attack(temp);//保护罩
 			temp->finished = 1;
 			CreateExplosion(CPoint(temp->pos.x + (temp->objectsize.x*temp->property->scale) / 2, temp->pos.y + (temp->objectsize.y*temp->property->scale)),0);
-			AudioFire();
+			mAudio.PlayFire();
 		}
 
 	}
@@ -366,7 +346,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			}
 			else {
 				temp->cooldown_collision = 0;
-				AudioCollision();
+				mAudio.PlayCollision();
 				if (plane_self.mcooldown.protection <= 0) {//保护罩
 					CreateExplosion(CPoint(plane_self.pos),0);
 				}
@@ -381,7 +361,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			temp_rect.bottom *= temp1->property->scale;
 			temp_rect.right *= temp1->property->scale;
 			if (temp->isCollsion(temp_rect)) {
-				AudioFire();
+				mAudio.PlayFire();
 				temp->attack(temp1);
 				
 			}
@@ -394,7 +374,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			temp_rect.right *= temp1->property->scale;
 			if (temp->isCollsion(temp_rect)) {
 
-				AudioFire();
+				mAudio.PlayFire();
 				temp->attack(temp1);
 				temp1->finished = 1;
 				CreateExplosion(CPoint(temp1->pos), 0);
@@ -405,7 +385,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			//爆炸
 
 			CreateExplosion(CPoint(temp->pos), 1);
-			AudioEnemyDie();
+			mAudio.PlayEnemyDie();
 			int random = rand() % 1000;
 			if (random > 0 && random < 600) {
 				int selection = rand() % 4;
@@ -419,35 +399,6 @@ void CMFCApplication3View::JudgeFlyingObject() {
 				pDoc->list_item.AddTail((CObject*)temp_item);
 
 			}
-			//掉物资
-			//hp
-			//Item *temp_item;
-			//temp_item = new Item();
-			//temp_item->loadproperty(*pDoc->mitem_properity[0]);
-			//temp_item->loadAnimation(pDoc->manimation_item);
-			//temp_item->windowsize = pDoc->windowssize;
-			//temp_item->setpos(CPoint(temp->pos));
-			//temp_item->setvelocity(CPoint(0, 5));
-
-			////防护罩
-			//Item *temp_item;
-			//temp_item = new Item();
-			//temp_item->loadproperty(*pDoc->mitem_properity[1]);
-			//temp_item->loadAnimation(pDoc->manimation_item);
-			//temp_item->windowsize = pDoc->windowssize;
-			//temp_item->setpos(CPoint(temp->pos));
-			//temp_item->setvelocity(CPoint(0, 5));
-
-			//追踪弹
-			//Item *temp_item;
-			//temp_item = new Item();
-			//temp_item->loadproperty(*pDoc->mitem_properity[2]);
-			//temp_item->loadAnimation(pDoc->manimation_item);
-			//temp_item->windowsize = pDoc->windowssize;
-			//temp_item->setpos(CPoint(temp->pos));
-			//temp_item->setvelocity(CPoint(0, 5));
-			//pDoc->list_item.AddTail((CObject*)temp_item);
-
 			temp->finished = 1;
 			mgamesetting.mission_killed++;
 			plane_self.exp += temp->exp;
@@ -467,7 +418,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 		if (plane_boss->finished == 1)return;
 		if (plane_boss->hp <= 0) {
 			plane_boss->finished = 1;
-			AudioWinBoss();
+			mAudio.PlayWinBoss();
 
 		}
 		//boss与我方飞机碰撞检测
@@ -475,7 +426,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 
 			plane_boss->attack(&plane_self);
 			CreateExplosion(CPoint(plane_self.pos), 0);
-			AudioCollision();
+			mAudio.PlayCollision();
 
 		}
 
@@ -488,7 +439,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			temp_rect.bottom *= temp1->property->scale;
 			temp_rect.right *= temp1->property->scale;
 			if (plane_boss->isCollsion(temp_rect)) {
-				AudioFire();
+				mAudio.PlayFire();
 				plane_boss->attack(temp1);
 				temp1->finished = 1;
 				CreateExplosion(CPoint(temp1->pos), 0);
@@ -504,7 +455,7 @@ void CMFCApplication3View::JudgeFlyingObject() {
 			temp_rect.bottom *= temp1->property->scale;
 			temp_rect.right *= temp1->property->scale;
 			if (plane_boss->isCollsion(temp_rect)) {
-				AudioFire();
+				mAudio.PlayFire();
 				plane_boss->attack(temp1);
 
 			}
@@ -654,6 +605,57 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 
 
 	
+};
+void CMFCApplication3View::DrawObject(CObList *a) {
+
+	for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
+	{
+		POSITION del = pos;
+		FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
+		temp->Draw(&MemDC);
+	}
+};
+void CMFCApplication3View::RemoveLaserBullet() {
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	for (POSITION pos = pDoc->list_bullet_laser_self.GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
+	{
+		POSITION del = pos;
+		FlyingObject *temp = (FlyingObject *)pDoc->list_bullet_laser_self.GetNext(pos);
+		delete temp;
+		pDoc->list_bullet_laser_self.RemoveAt(del);
+	}
+};
+void CMFCApplication3View::DestroyFinishedObject(CObList *a) {
+
+	for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//我发子弹碰撞销毁
+	{
+		POSITION del = pos;
+		FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
+		temp->calculate_location();
+		if (temp->finished) {
+			delete temp;
+			a->RemoveAt(del);
+			continue;
+		}
+	}
+
+};
+void CMFCApplication3View::CreateExplosion(CPoint pos, int type) {
+	CMFCApplication3Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+	Explosion *temp_explo;
+	temp_explo = new Explosion();
+	temp_explo->setAnimation(pDoc->manimation_explosion);
+	temp_explo->setpos(pos);
+	temp_explo->windowsize = pDoc->windowssize;
+	temp_explo->type = type;
+	pDoc->list_explosion.AddTail((CObject*)temp_explo);
+
 };
 void CMFCApplication3View::InitializeEquation() {
 	CMFCApplication3Doc* pDoc = GetDocument();
@@ -1005,4 +1007,11 @@ void CMFCApplication3View::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		break;
 	}
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+}
+
+
+void CMFCApplication3View::OnNewGame()
+{
+	MessageBox(L"test");
+	// TODO: 在此添加命令处理程序代码
 }

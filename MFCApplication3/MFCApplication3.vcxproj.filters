@@ -34,6 +34,9 @@
     <Filter Include="源文件\DirectSound">
       <UniqueIdentifier>{9fc9c93e-2535-47ec-9a64-24fa04ff7a2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Bullet">
+      <UniqueIdentifier>{f5358c2c-3ab3-416d-9241-85943ccd507b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -105,11 +108,14 @@
     <ClInclude Include="DSList.h">
       <Filter>头文件\DirectSound</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="BulletLaser.h">
       <Filter>头文件\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>头文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>头文件\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +132,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MFCApplication3View.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletGeneral.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
@@ -156,6 +159,24 @@
       <Filter>源文件\DirectSound</Filter>
     </ClCompile>
     <ClCompile Include="Equation.cpp">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletGeneral.cpp">
+      <Filter>源文件\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletLaser.cpp">
+      <Filter>源文件\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletTrace.cpp">
+      <Filter>源文件\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
       <Filter>源文件\System</Filter>
     </ClCompile>
   </ItemGroup>

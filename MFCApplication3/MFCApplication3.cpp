@@ -155,6 +155,9 @@ protected:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnNMClickSyslink1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMClickSyslink2(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -167,6 +170,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
+	ON_NOTIFY(NM_CLICK, IDC_SYSLINK1, &CAboutDlg::OnNMClickSyslink1)
+	ON_NOTIFY(NM_CLICK, IDC_SYSLINK2, &CAboutDlg::OnNMClickSyslink2)
 END_MESSAGE_MAP()
 
 // 用于运行对话框的应用程序命令
@@ -180,3 +185,19 @@ void CMFCApplication3App::OnAppAbout()
 
 
 
+
+
+void CAboutDlg::OnNMClickSyslink1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	ShellExecute(0, NULL, _T("https://github.com/qq960826/AirplaneWar"), NULL, NULL, SW_NORMAL);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+}
+
+
+void CAboutDlg::OnNMClickSyslink2(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 在此添加控件通知处理程序代码
+	ShellExecute(0, NULL, _T("http://wzq.hk"), NULL, NULL, SW_NORMAL);
+	*pResult = 0;
+}

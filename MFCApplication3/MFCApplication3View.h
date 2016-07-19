@@ -11,13 +11,12 @@
 #include "Explosion.h"
 #include "PlaneBoss.h"
 #include "Item.h"
-//#pragma comment( lib, "json.lib" )
+#include "Audio.h"
 #include "json.hpp"
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include "DSBuffer.h"
-#include "DSList.h"
+
 #pragma once
 using namespace Gdiplus;
 
@@ -36,117 +35,24 @@ struct gamesetting {
 class CMFCApplication3View : public CView
 {
 public:
-	int music_explosion_index = 1;
-	int music_fire_index = 31;
-	int music_pickup_index = 62;
-	int music_collision_index = 72;
-	int music_enemydie_index = 82;
-	int music_laser_index = 87;
+	Audio mAudio;
+public:
+
 	int key_space = 0;//1
 public:
-	CDSList DSlist1;
+	
 	void LoadImageFromFile();
 	void InitializeItem();
 	void InitalizeAirplane();
 	void InitializeEquation();
 
-	void CreateExplosion(CPoint pos,int type) {
-		CMFCApplication3Doc* pDoc = GetDocument();
-		ASSERT_VALID(pDoc);
-		if (!pDoc)
-			return;
-		Explosion *temp_explo;
-		temp_explo = new Explosion();
-		temp_explo->setAnimation(pDoc->manimation_explosion);
-		temp_explo->setpos(pos);
-		temp_explo->windowsize = pDoc->windowssize;
-		temp_explo->type = type;
-		pDoc->list_explosion.AddTail((CObject*)temp_explo);
-	
-	};
-	void DestroyFinishedObject(CObList *a) {
+	void CreateExplosion(CPoint pos,int type);
+	void DestroyFinishedObject(CObList *a);
+	void RemoveLaserBullet();
+	void DrawObject(CObList *a);
 
-		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//我发子弹碰撞销毁
-		{
-			POSITION del = pos;
-			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
-			temp->calculate_location();
-			if (temp->finished) {
-				delete temp;
-				a->RemoveAt(del);
-				continue;
-			}
-		}
-	
-	}
-	void RemoveLaserBullet() {
-		CMFCApplication3Doc* pDoc = GetDocument();
-		ASSERT_VALID(pDoc);
-		if (!pDoc)
-			return;
-		for (POSITION pos = pDoc->list_bullet_laser_self.GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
-		{
-			POSITION del = pos;
-			FlyingObject *temp = (FlyingObject *)pDoc->list_bullet_laser_self.GetNext(pos);
-			delete temp;
-			pDoc->list_bullet_laser_self.RemoveAt(del);
-		}
-	}
-	void DrawObject(CObList *a) {
 
-		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
-		{
-			POSITION del = pos;
-			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
-			temp->Draw(&MemDC);
-		}
-	}
-	void AudioExplosion() {
-		DSlist1.PlayBuffer(music_fire_index, 0);
-		music_fire_index++;
-		if (music_fire_index >= 61) {
-			music_fire_index = 31;
 
-		}
-	}
-	void AudioFire() {
-		DSlist1.PlayBuffer(music_explosion_index, 0);
-		music_explosion_index++;
-		if (music_explosion_index >= 31) {
-			music_explosion_index = 1;
-		}
-	}
-	void AudioPickup() {
-		DSlist1.PlayBuffer(music_pickup_index, 0);
-		music_pickup_index++;
-		if (music_pickup_index >= 72) {
-			music_pickup_index = 62;
-		}
-	}
-	void AudioCollision() {
-		DSlist1.PlayBuffer(music_collision_index, 0);
-		music_collision_index++;
-		if (music_collision_index >= 82) {
-			music_collision_index = 72;
-		}
-	}
-	void AudioEnemyDie() {
-		DSlist1.PlayBuffer(music_enemydie_index, 0);
-		music_enemydie_index++;
-		if (music_enemydie_index >= 87) {
-			music_enemydie_index = 82;
-		}
-	}
-	void AudioWinBoss() {
-		DSlist1.PlayBuffer(61, 0);
-	}
-	void AudioLaser() {
-		DSlist1.PlayBuffer(music_laser_index, 0);
-		music_laser_index++;
-		if (music_laser_index >= 117) {
-			music_laser_index = 87;
-		}
-	}
 public:
 	PlaneSelf plane_self;
 	PlaneBoss *plane_boss=NULL;
@@ -208,6 +114,7 @@ public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnNewGame();
 };
 
 #ifndef _DEBUG  // MFCApplication3View.cpp 中的调试版本

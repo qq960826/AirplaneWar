@@ -1,1 +1,31 @@
-﻿
+﻿cl : 命令行 warning D9030: “/Gm”与多处理不兼容；忽略 /MP 开关
+  MFCApplication3View.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(309): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(310): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(325): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(326): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(331): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(361): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(362): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(373): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(374): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(407): warning C4305: “+=”: 从“double”到“float”截断
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(439): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(440): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(455): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(456): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(684): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(746): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(787): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(803): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(821): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+  MFCApplication3.cpp
+  Audio.cpp
+  正在生成代码...
+  正在编译...
+  DSBuffer.cpp
+  正在生成代码...
+LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范)
+Animation.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:LBR”规范)
+  LINK : 已指定 /LTCG，但不需要生成代码；从链接命令行中移除 /LTCG 以提高链接器性能
+  MFCApplication3.vcxproj -> \\psf\Home\Desktop\AirplaneWar\x64\Debug\MFCApplication3.exe

@@ -2,8 +2,6 @@
 #include "PlaneEmenyGeneral.h"
 PlaneEmenyGeneral::PlaneEmenyGeneral() :PlaneBase() {
 	cooldown_collision = 0;
-	//cooldown_fire = 0;
-
 
 };
 void PlaneEmenyGeneral::setAttack(int a) { mattack = a; };
@@ -22,6 +20,22 @@ void PlaneEmenyGeneral::Onedgeright() {
 void PlaneEmenyGeneral::Onedgebottom() {
 	if (pos.y>objectsize.y + windowsize->y)finished = 1;
 };
+void PlaneEmenyGeneral::setequation(move_equation_set *a) {
+	equation_set = *a;
+	mequation.loadequation(equation_set);
+	mequation.setoffset(&equation_set.offset);
+};
+void PlaneEmenyGeneral::setoffset(CPoint a) {
+	offset = a;
+};
+void PlaneEmenyGeneral::calculate_location() {
+	mequation.calculate();
+	pos = mequation.getresult();
+	edgedetect();
+
+
+};
+void PlaneEmenyGeneral::setvelociety(float a) { mequation.setvelociety(a); };
 //void PlaneEmenyGeneral::fire(CObList *bullet,int id) {
 //	int num = mproperty->mbullet_set->num_each[id];
 //	for (int i = 0; i < num; i++) {
