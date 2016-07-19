@@ -38,6 +38,10 @@ class CMFCApplication3View : public CView
 public:
 	int music_explosion_index = 1;
 	int music_fire_index = 31;
+	int music_pickup_index = 62;
+	int music_collision_index = 72;
+	int music_enemydie_index = 82;
+	int music_laser_index = 87;
 	int key_space = 0;//1
 public:
 	CDSList DSlist1;
@@ -75,6 +79,19 @@ public:
 		}
 	
 	}
+	void RemoveLaserBullet() {
+		CMFCApplication3Doc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
+		for (POSITION pos = pDoc->list_bullet_laser_self.GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
+		{
+			POSITION del = pos;
+			FlyingObject *temp = (FlyingObject *)pDoc->list_bullet_laser_self.GetNext(pos);
+			delete temp;
+			pDoc->list_bullet_laser_self.RemoveAt(del);
+		}
+	}
 	void DrawObject(CObList *a) {
 
 		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//绘制我方普通子弹
@@ -82,6 +99,52 @@ public:
 			POSITION del = pos;
 			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
 			temp->Draw(&MemDC);
+		}
+	}
+	void AudioExplosion() {
+		DSlist1.PlayBuffer(music_fire_index, 0);
+		music_fire_index++;
+		if (music_fire_index >= 61) {
+			music_fire_index = 31;
+
+		}
+	}
+	void AudioFire() {
+		DSlist1.PlayBuffer(music_explosion_index, 0);
+		music_explosion_index++;
+		if (music_explosion_index >= 31) {
+			music_explosion_index = 1;
+		}
+	}
+	void AudioPickup() {
+		DSlist1.PlayBuffer(music_pickup_index, 0);
+		music_pickup_index++;
+		if (music_pickup_index >= 72) {
+			music_pickup_index = 62;
+		}
+	}
+	void AudioCollision() {
+		DSlist1.PlayBuffer(music_collision_index, 0);
+		music_collision_index++;
+		if (music_collision_index >= 82) {
+			music_collision_index = 72;
+		}
+	}
+	void AudioEnemyDie() {
+		DSlist1.PlayBuffer(music_enemydie_index, 0);
+		music_enemydie_index++;
+		if (music_enemydie_index >= 87) {
+			music_enemydie_index = 82;
+		}
+	}
+	void AudioWinBoss() {
+		DSlist1.PlayBuffer(61, 0);
+	}
+	void AudioLaser() {
+		DSlist1.PlayBuffer(music_laser_index, 0);
+		music_laser_index++;
+		if (music_laser_index >= 117) {
+			music_laser_index = 87;
 		}
 	}
 public:

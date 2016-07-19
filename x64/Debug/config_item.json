@@ -2,7 +2,7 @@
 	{
 		"id":0,
 		"type":0,
-		"value":50,
+		"value":150,
 		"pictureid":[3],
 		"scale":0.5
 		
@@ -12,14 +12,22 @@
 		"type":1,
 		"value":10000,
 		"pictureid":[2],
-		"scale":1
+		"scale":0.5
 		
 	},
 	{
 		"id":2,
 		"type":2,
-		"value":10000,
+		"value":25000,
 		"pictureid":[1],
+		"scale":0.5
+		
+	},
+	{
+		"id":3,
+		"type":3,
+		"value":25000,
+		"pictureid":[11],
 		"scale":1
 		
 	}

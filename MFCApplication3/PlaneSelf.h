@@ -15,6 +15,8 @@ public:
 
 	} mcooldown;
 
+	int cooldown_laser=0;//控制间距使用
+
 	int level;
 	
 	PlaneSelf() :PlaneBase() {};
@@ -34,22 +36,22 @@ public:
 		}
 	}
 	void fire_laser(CObList *bullet) {
-		if (mcooldown.fire_laser <= 100) { 
-			mcooldown.fire_laser += 100;
+		mcooldown.fire_laser = 100;
+		if (mcooldown.fire_laser <= 0)return;
+		if (cooldown_laser <= 100) {
+			cooldown_laser += 100;
 			return; }
-		mcooldown.fire_laser = 0;
+		cooldown_laser = 0;
 
-		int num = mproperty->mbullet_set->num_each[1];
-
+		int num = mproperty->mbullet_set->num_each[2];
+		for (int i = 0; i < num; i++) {
 			BulletLaser  *mbullet = new BulletLaser();
+			mbullet->setproperty(mproperty->mbullet_set->bullet[2][i]);
 			mbullet->setgunman(this);
-			mbullet->setproperty(mproperty->mbullet_set->bullet[2][0]);
-
 			mbullet->loadAnimation(pDoc->manimation_bullet);
-			
 			mbullet->windowsize = pDoc->windowssize;
 			bullet->AddHead((CObject*)mbullet);
-
+		}
 	}
 	void calculate_cooldown() {
 		if (mcooldown.protection > 0) {
@@ -57,6 +59,9 @@ public:
 		}
 		if (mcooldown.fire_trace > 0) {
 			mcooldown.fire_trace -= 100;
+		}
+		if (mcooldown.fire_laser > 0) {
+			mcooldown.fire_laser -= 100;
 		}
 	}
 	void getitem(Item item) {
@@ -68,12 +73,12 @@ public:
 			}
 			break;
 		case 1://protection
-			mcooldown.protection = item.property.value;
+			mcooldown.protection += item.property.value;
 			break;
-		case 2://laser bullet
+		case 2://trace bullet
 			mcooldown.fire_trace += item.property.value;
 			break;
-		case 3://trace bullet
+		case 3://laser bullet
 			mcooldown.fire_laser += item.property.value;
 			break;
 		
