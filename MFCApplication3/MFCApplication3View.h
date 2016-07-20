@@ -23,10 +23,14 @@ using namespace Gdiplus;
 struct gamesetting {
 	int mission_present=0;//当前关卡
 	bool bossmode = 0;//boss模式
-	int mission_level[4] = { 5,50,90,140 };//升级杀敌数要求
+	int mission_level[4] = { 20,50,90,140 };//升级杀敌数要求
 	int bossid [4] = {16,17,18,19};//bossid
 	int mission_killed = 0;//已杀普通敌机数目
 	int cooldown_plane_generate[2] = {0,2000};//第一值为状态量，第二个值为目标量
+
+	int option_infinite_life = 0;
+	int option_infinite_laser = 0;
+	int option_infinite_missle = 0;
 
 
 
@@ -50,8 +54,64 @@ public:
 	void DestroyFinishedObject(CObList *a);
 	void RemoveLaserBullet();
 	void DrawObject(CObList *a);
+	void CheckOption() {
+		if (mgamesetting.option_infinite_laser)plane_self.mcooldown.fire_laser = 1000;
+		if (mgamesetting.option_infinite_missle)plane_self.mcooldown.fire_trace = 1000;
+		if (mgamesetting.option_infinite_life)plane_self.mcooldown.protection=1000;
+	
+	}
+	void DestroyAllObject(CObList *a) {
+		for (POSITION pos = a->GetHeadPosition(); pos != NULL;)//我发子弹碰撞销毁
+		{
+			POSITION del = pos;
+			FlyingObject *temp = (FlyingObject *)a->GetNext(pos);
+			delete temp;
+			a->RemoveAt(del);
+		}
+	}
+	void NewGame() {
+		StopGame();
+		CMFCApplication3Doc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
+		
+		plane_self.setproperty(pDoc->mplane_property[0]);
+		plane_self.level = 0;
+		plane_self.exp = 3600;
 
+		mgamesetting.mission_killed = 0;
+		mgamesetting.bossmode = 0;
+		mgamesetting.cooldown_plane_generate[0] = 0;
+		mgamesetting.mission_present = 1;
 
+		pDoc->mBackground->setspeed(12);
+		pDoc->mBackground->init(1);
+
+		mAudio.PlayBackground();
+		this->SetTimer(1, 40, NULL);//draw
+		this->SetTimer(4, 40, NULL);//generateenemy
+	}
+	void StopGame() {
+		CMFCApplication3Doc* pDoc = GetDocument();
+		ASSERT_VALID(pDoc);
+		if (!pDoc)
+			return;
+		mAudio.StopAll();
+		this->SetTimer(1, 0, NULL);//draw
+		this->SetTimer(4, 0, NULL);//generateenemy
+		DestroyAllObject(&pDoc->list_bullet_general_self);//销毁我方普通子弹
+		DestroyAllObject(&pDoc->list_bullet_laser_self);//销毁我方激光子弹
+		DestroyAllObject(&pDoc->list_bullet_general_enemy);//销毁敌方子弹
+		DestroyAllObject(&pDoc->list_airplane_enemy);//销毁敌方战机
+		DestroyAllObject(&pDoc->list_explosion);//销毁爆炸
+		DestroyAllObject(&pDoc->list_item);//销毁物资
+		if (mgamesetting.bossmode) {
+			delete plane_boss;
+			plane_boss = NULL;
+		}
+	
+	}
 
 public:
 	PlaneSelf plane_self;
@@ -115,6 +175,12 @@ public:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnNewGame();
+	afx_msg void OnInfinitelifeOn();
+	afx_msg void OnInfinitelifeOff();
+	afx_msg void OnInfinitelaserbulletShellexecute();
+	afx_msg void OnInfinitelaserbulletOff();
+	afx_msg void OnInfinitemissileOn();
+	afx_msg void OnInfinitemissileOff();
 };
 
 #ifndef _DEBUG  // MFCApplication3View.cpp 中的调试版本

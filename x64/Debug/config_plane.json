@@ -4,7 +4,7 @@
 	"hp":300,
 	"attack":5,
 	"pictureid":21,
-	"exp":500,
+	"exp":1500,
 	"bullet_set":
 		{
 		"id":1,
@@ -13,7 +13,7 @@
 			[
 				{
 					"num_each": 1,
-					"cooldown":200,
+					"cooldown":250,
 					"bullet_property": [
 						{
 							"id": 2,
@@ -89,7 +89,7 @@
 	"hp":600,
 	"attack":10,
 	"pictureid":20,
-	"exp":1000,
+	"exp":3700,
 	"bullet_set":
 		{
 		"id":1,
@@ -98,13 +98,13 @@
 			[
 				{
 					"num_each": 1,
-					"cooldown":200,
+					"cooldown":400,
 					"bullet_property": [
 					
 						{
 							"id": 1,
 							"pictureid": 26,
-							"attack": 15,
+							"attack": 20,
 							"offset": [
 								100,
 								-20
@@ -116,7 +116,7 @@
 						{
 							"id": 2,
 							"pictureid": 26,
-							"attack": 15,
+							"attack": 20,
 							"offset": [
 								50,
 								-30
@@ -128,7 +128,7 @@
 						{
 							"id": 2,
 							"pictureid": 26,
-							"attack": 15,
+							"attack": 20,
 							"offset": [
 								0,
 								-30
@@ -209,7 +209,7 @@
 	"hp":1200,
 	"attack":20,
 	"pictureid":22,
-	"exp":2000,
+	"exp":6090,
 	"bullet_set":
 		{
 		"id":1,
@@ -218,7 +218,7 @@
 			[
 				{
 					"num_each": 1,
-					"cooldown":200,
+					"cooldown":700,
 					"bullet_property": [
 						{
 							"id": 1,
@@ -237,7 +237,7 @@
 							"pictureid": 9,
 							"attack": 45,
 							"offset": [
-								50,
+								40,
 								0
 							],
 							"rotation": 0,
@@ -328,7 +328,7 @@
 	"hp":2400,
 	"attack":20,
 	"pictureid":19,
-	"exp":4000,
+	"exp":8700,
 	"bullet_set":
 		{
 		"id":1,
@@ -337,7 +337,7 @@
 			[
 				{
 					"num_each": 1,
-					"cooldown":200,
+					"cooldown":400,
 					"bullet_property": [
 						{
 							"id": 1,
@@ -417,7 +417,7 @@
 							"attack": 10,
 							"offset": [
 								15,
-								5
+								20
 							],
 							"rotation": 0,
 							"speed": -22,
@@ -428,8 +428,8 @@
 							"pictureid": 114,
 							"attack": 10,
 							"offset": [
-								70,
-								5
+								80,
+								20
 							],
 							"rotation": 0,
 							"speed": -22,

@@ -1,29 +1,56 @@
-﻿cl : 命令行 warning D9030: “/Gm”与多处理不兼容；忽略 /MP 开关
+﻿  stdafx.cpp
+cl : 命令行 warning D9030: “/Gm”与多处理不兼容；忽略 /MP 开关
+  BulletTrace.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\bullettrace.cpp(31): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\bullettrace.cpp(33): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\bullettrace.cpp(34): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\bullettrace.cpp(38): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\bullettrace.cpp(39): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+  BulletLaser.cpp
+  Equation.cpp
+  PlaneSelf.cpp
+  PlaneEmenyGeneral.cpp
+  BulletGeneral.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\bulletgeneral.cpp(2): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
+\\psf\home\desktop\airplanewar\mfcapplication3\bulletgeneral.cpp(47): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\bulletgeneral.cpp(48): warning C4244: “=”: 从“double”转换到“LONG”，可能丢失数据
+  Background.cpp
+  PlaneBase.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\planebase.cpp(47): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
   MFCApplication3View.cpp
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(309): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(310): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(325): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(326): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(331): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(361): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(362): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(373): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(374): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(407): warning C4305: “+=”: 从“double”到“float”截断
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(439): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(440): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(455): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(456): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(684): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(746): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(787): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(803): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(821): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(302): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(303): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(318): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(319): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(338): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(368): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(369): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(380): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(381): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(414): warning C4305: “+=”: 从“double”到“float”截断
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(446): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(447): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(462): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(463): warning C4244: “*=”: 从“float”转换到“LONG”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(716): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(778): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(819): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(835): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(853): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\mfcapplication3view.cpp(862): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+  MFCApplication3Doc.cpp
   MFCApplication3.cpp
-  Audio.cpp
-  正在生成代码...
-  正在编译...
+  MainFrm.cpp
+  Item.cpp
+  FlyingObject.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\flyingobject.cpp(58): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  Explosion.cpp
+  DSList.cpp
   DSBuffer.cpp
+  Audio.cpp
+  Animation.cpp
+\\psf\home\desktop\airplanewar\mfcapplication3\animation.cpp(57): warning C4244: “参数”: 从“float”转换到“INT”，可能丢失数据
+\\psf\home\desktop\airplanewar\mfcapplication3\animation.cpp(79): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
   正在生成代码...
 LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范)
 Animation.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:LBR”规范)

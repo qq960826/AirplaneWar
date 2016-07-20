@@ -29,6 +29,12 @@ BEGIN_MESSAGE_MAP(CMFCApplication3View, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
 	ON_COMMAND(ID_NEW_GAME, &CMFCApplication3View::OnNewGame)
+	ON_COMMAND(ID_INFINITELIFE_ON, &CMFCApplication3View::OnInfinitelifeOn)
+	ON_COMMAND(ID_INFINITELIFE_OFF, &CMFCApplication3View::OnInfinitelifeOff)
+	ON_COMMAND(ID_INFINITELASERBULLET_SHELLEXECUTE, &CMFCApplication3View::OnInfinitelaserbulletShellexecute)
+	ON_COMMAND(ID_INFINITELASERBULLET_OFF, &CMFCApplication3View::OnInfinitelaserbulletOff)
+	ON_COMMAND(ID_INFINITEMISSILE_ON, &CMFCApplication3View::OnInfinitemissileOn)
+	ON_COMMAND(ID_INFINITEMISSILE_OFF, &CMFCApplication3View::OnInfinitemissileOff)
 END_MESSAGE_MAP()
 
 // CMFCApplication3View 构造/析构
@@ -137,30 +143,17 @@ void CMFCApplication3View::OnInitialUpdate() {
 	InitializeEquation();//加载轨迹方程
 	InitializeItem();//加载奖励
 	mAudio.Init(GetModuleDir());//加载声音
-	mAudio.PlayBackground();
+	
 
 	pDoc->mBackground = new Background();
 	pDoc->mBackground->mAnimation = pDoc->manimation_background;
 	pDoc->mBackground->setscreensize(CPoint(1024,768));
-	pDoc->mBackground->setspeed(12);
-	pDoc->mBackground->init(0);
+
 	
 
 	plane_self.mAnimation = pDoc->manimation_enemy;
 	plane_self.setDoc(pDoc);
-	plane_self.setproperty(pDoc->mplane_property[0]);
-	plane_self.level = 0;
-	plane_self.exp = 0;
-
-	mgamesetting.mission_killed = 0;
-
-
-	//HRESULT hr = DirectSoundCreate8(NULL, &lpDirectSound, NULL));
-
-	
-
-	this->SetTimer(1,100,NULL);//draw
-	this->SetTimer(4, 100, NULL);//generateenemy
+	NewGame();
 }
 CString GetWorkDir()
 {
@@ -189,8 +182,8 @@ void CMFCApplication3View::FireSetting() {
 
 		if (plane_self.mcooldown.fire_laser <= 0) {
 			//发射普通导弹
-			if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
-				plane_self.cooldown_fire[bulletid] += 100;
+			if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty.mbullet_set->cooldown[bulletid]) {
+				plane_self.cooldown_fire[bulletid] += 50;
 
 			}
 			else {
@@ -203,7 +196,7 @@ void CMFCApplication3View::FireSetting() {
 		else {
 			bulletid = 2;
 			if (plane_self.cooldown_fire[bulletid] < 900) {
-				plane_self.cooldown_fire[bulletid] += 100;
+				plane_self.cooldown_fire[bulletid] += 50;
 
 			}
 			else {
@@ -221,8 +214,8 @@ void CMFCApplication3View::FireSetting() {
 		if (!pDoc->list_airplane_enemy.IsEmpty()) {
 			bulletid = 1;
 
-			if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty->mbullet_set->cooldown[bulletid]) {
-				plane_self.cooldown_fire[bulletid] += 100;
+			if (plane_self.cooldown_fire[bulletid] < plane_self.mproperty.mbullet_set->cooldown[bulletid]) {
+				plane_self.cooldown_fire[bulletid] += 50;
 			}
 			else {
 				plane_self.cooldown_fire[bulletid] = 0;
@@ -245,8 +238,8 @@ void CMFCApplication3View::FireSetting() {
 	if (mgamesetting.bossmode) {//boss发射导弹
 
 		static int boss_bulletid = 0;
-		if (plane_boss->cooldown_fire[boss_bulletid] < plane_boss->mproperty->mbullet_set->cooldown[boss_bulletid]) {
-			plane_boss->cooldown_fire[boss_bulletid] += 100;
+		if (plane_boss->cooldown_fire[boss_bulletid] < plane_boss->mproperty.mbullet_set->cooldown[boss_bulletid]) {
+			plane_boss->cooldown_fire[boss_bulletid] += 50;
 			
 		}
 		else {
@@ -255,7 +248,7 @@ void CMFCApplication3View::FireSetting() {
 
 		}
 		//boss_bulletid++;
-		if (boss_bulletid >= plane_boss->mproperty->mbullet_set->num_set) {
+		if (boss_bulletid >= plane_boss->mproperty.mbullet_set->num_set) {
 			boss_bulletid = 0;
 		}
 	
@@ -269,8 +262,8 @@ void CMFCApplication3View::FireSetting() {
 			POSITION del_airplane_enemy = pos;
 			int bulletid = 0;
 			PlaneEmenyGeneral *temp = (PlaneEmenyGeneral *)pDoc->list_airplane_enemy.GetNext(pos);
-			if (temp->cooldown_fire [bulletid]< temp->mproperty->mbullet_set->cooldown[bulletid]) {
-				temp->cooldown_fire[bulletid] += 100;
+			if (temp->cooldown_fire [bulletid]< temp->mproperty.mbullet_set->cooldown[bulletid]) {
+				temp->cooldown_fire[bulletid] += 50;
 				continue;
 			}
 			temp->fire(&pDoc->list_bullet_general_enemy, bulletid);
@@ -326,6 +319,20 @@ void CMFCApplication3View::JudgeFlyingObject() {
 		temp_rect.right *= temp->property->scale;
 
 		if (plane_self.isCollsion(temp_rect)) {
+			switch (mgamesetting.mission_present) {
+			case 0:
+				temp->setattack(10);
+				break;
+			case 1:
+				temp->setattack(20);
+				break;
+			case 2:
+				temp->setattack(50);
+				break;
+			case 3:
+				temp->setattack(100);
+				break;
+			}
 			if(plane_self.mcooldown.protection<=0)plane_self.attack(temp);//保护罩
 			temp->finished = 1;
 			CreateExplosion(CPoint(temp->pos.x + (temp->objectsize.x*temp->property->scale) / 2, temp->pos.y + (temp->objectsize.y*temp->property->scale)),0);
@@ -476,7 +483,7 @@ void CMFCApplication3View::JudgeSetting() {//剧情检测
 	if (!pDoc)
 		return;
 	//飞机等级检测
-	if (plane_self.exp > plane_self.mproperty->exp&&plane_self.level != 3) {//飞机升级
+	if (plane_self.exp > plane_self.mproperty.exp&&plane_self.level != 3) {//飞机升级
 			plane_self.level++;
 			int temp = plane_self.exp;
 			plane_self.setproperty(pDoc->mplane_property[plane_self.level]);
@@ -514,7 +521,7 @@ void CMFCApplication3View::JudgeSetting() {//剧情检测
 
 	//普通模式产生飞机
 	if (pDoc->list_airplane_enemy.GetCount() < 4) {
-		if (mgamesetting.cooldown_plane_generate[0] < mgamesetting.cooldown_plane_generate[1]) { mgamesetting.cooldown_plane_generate[0] += 100; return; }
+		if (mgamesetting.cooldown_plane_generate[0] < mgamesetting.cooldown_plane_generate[1]) { mgamesetting.cooldown_plane_generate[0] += 50; return; }
 		mgamesetting.cooldown_plane_generate[0] = 0;
 		int selection[] = { 4,5,6,7,8,9,10,11,12,13,15 };
 		srand((unsigned)time(NULL));
@@ -524,12 +531,36 @@ void CMFCApplication3View::JudgeSetting() {//剧情检测
 		option1 = rand() % 11;
 		option2 = rand() % pDoc->mplane_property[selection[option1]]->equation_num;
 
+
 		temp->setAnimation(pDoc->manimation_enemy);
-		temp->setproperty(pDoc->mplane_property[selection[option1]]);
+		
 		temp->setDoc(pDoc);
 
 		temp->setequation(pDoc->mmove_equation_set[option2]);
 		temp->setvelociety(50);
+		switch (mgamesetting.mission_present)
+		{
+		case 0:
+			pDoc->mplane_property[selection[option1]]->hp = 15;
+			temp->setproperty(pDoc->mplane_property[selection[option1]]);
+			temp->setAttack(20);
+			
+			//temp->setHP(15);r
+			break;
+		case 1:
+			pDoc->mplane_property[selection[option1]]->hp = 30;
+			temp->setproperty(pDoc->mplane_property[selection[option1]]);
+			temp->setAttack(40);
+			break;
+		case 2:
+			pDoc->mplane_property[selection[option1]]->hp = 60;
+			temp->setproperty(pDoc->mplane_property[selection[option1]]);
+			temp->setAttack(60);
+			break;
+		default:
+			temp->setproperty(pDoc->mplane_property[selection[option1]]);
+			break;
+		}
 		pDoc->list_airplane_enemy.AddTail((CObject*)temp);
 	}
 
@@ -597,6 +628,7 @@ afx_msg void CMFCApplication3View::OnTimer(UINT_PTR nIDEvent) {
 	}
 
 	case 4:
+		CheckOption();
 		JudgeSetting();
 		JudgeFlyingObject();
 		FireSetting();
@@ -827,7 +859,7 @@ void CMFCApplication3View::InitalizeAirplane() {
 				temp_plane->mbullet_set->bullet[j][k]->pictureid = json_bullet_each["pictureid"];
 				temp_plane->mbullet_set->bullet[j][k]->rotation = json_bullet_each["rotation"];
 				temp_plane->mbullet_set->bullet[j][k]->scale = json_bullet_each["scale"];
-				temp_plane->mbullet_set->bullet[j][k]->speed = json_bullet_each["speed"];
+				temp_plane->mbullet_set->bullet[j][k]->speed = (float)json_bullet_each["speed"]/2;
 				temp_plane->mbullet_set->bullet[j][k]->offset = new CPoint(json_bullet_each["offset"][0], json_bullet_each["offset"][1]);
 				
 			}
@@ -1012,6 +1044,48 @@ void CMFCApplication3View::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CMFCApplication3View::OnNewGame()
 {
-	MessageBox(L"test");
+	NewGame();
 	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CMFCApplication3View::OnInfinitelifeOn()
+{
+	mgamesetting.option_infinite_life = 1;
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CMFCApplication3View::OnInfinitelifeOff()
+{
+	// TODO: 在此添加命令处理程序代码
+	mgamesetting.option_infinite_life = 0;
+}
+
+
+void CMFCApplication3View::OnInfinitelaserbulletShellexecute()
+{
+	// TODO: 在此添加命令处理程序代码
+	mgamesetting.option_infinite_laser = 1;
+}
+
+
+void CMFCApplication3View::OnInfinitelaserbulletOff()
+{
+	// TODO: 在此添加命令处理程序代码
+	mgamesetting.option_infinite_laser = 0;
+}
+
+
+void CMFCApplication3View::OnInfinitemissileOn()
+{
+	// TODO: 在此添加命令处理程序代码
+	mgamesetting.option_infinite_missle = 1;
+}
+
+
+void CMFCApplication3View::OnInfinitemissileOff()
+{
+	// TODO: 在此添加命令处理程序代码
+	mgamesetting.option_infinite_missle = 0;
 }

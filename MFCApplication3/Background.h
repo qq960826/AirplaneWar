@@ -10,9 +10,9 @@ private:
 public:
 	Animation *mAnimation;
 	Background() {};
+	void init(int index);
 	void setscreensize(CPoint a);
 	void setspeed(int a);
-	void init(int index);
 	void drawbackground(CDC *Pdc);
 	void drawproperty(CDC *Pdc);
 

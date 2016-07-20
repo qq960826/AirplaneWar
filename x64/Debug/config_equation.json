@@ -12,13 +12,13 @@
 				"x":{
 						"expression":"0",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":2
 					},
 				"y":{
 						"expression":"v",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":5
 					}
 			},
@@ -27,14 +27,14 @@
 				"x":{
 						"expression":"cos((v/100)*t)*v",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":3.14
 					},
 				
 				"y":{
 						"expression":"sin((v/100)*t)*v",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":3.14
 					}
 			},
@@ -42,13 +42,13 @@
 				"x":{
 						"expression":"0",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":2
 					},
 				"y":{
 						"expression":"v",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":2
 					}
 			},
@@ -56,14 +56,14 @@
 				"x":{
 						"expression":"cos((v/100)*t)*v",
 						"base":3.14,
-						"increment":0.1,
+						"increment":0.05,
 						"target":9.42
 					},
 				
 				"y":{
 						"expression":"sin((v/100)*t)*v",
 						"base":3.14,
-						"increment":0.1,
+						"increment":0.05,
 						"target":9.42
 					}
 			},
@@ -71,13 +71,13 @@
 				"x":{
 						"expression":"0",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":2
 					},
 				"y":{
 						"expression":"-v",
 						"base":0,
-						"increment":0.1,
+						"increment":0.05,
 						"target":2
 					}
 			},
@@ -85,14 +85,14 @@
 				"x":{
 						"expression":"cos((v/100)*t)*v",
 						"base":9.42,
-						"increment":0.1,
+						"increment":0.05,
 						"target":12.56
 					},
 				
 				"y":{
 						"expression":"sin((v/100)*t)*v",
 						"base":9.42,
-						"increment":0.1,
+						"increment":0.05,
 						"target":12.56
 					}
 			}
@@ -114,14 +114,14 @@
 						"x":{
 									"expression":"0.5*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":15
 								
 							},
 						"y":{
 									"expression":"9*t",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":15
 								
 							}
@@ -151,14 +151,14 @@
 						"x":{
 									"expression":"cos((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							}
@@ -167,14 +167,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							},
 						"y":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							}
@@ -183,14 +183,14 @@
 						"x":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":7.9
 								
 							},
 						"y":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":7.9
 								
 							}
@@ -202,14 +202,14 @@
 						"x":{
 									"expression":"-cos((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							}
@@ -219,14 +219,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							},
 						"y":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							}
@@ -253,14 +253,14 @@
 						"x":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2
 								
 							},
 						"y":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2
 								
 							}
@@ -269,14 +269,14 @@
 						"x":{
 									"expression":"cos((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4.712
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4.712
 								
 							}
@@ -285,14 +285,14 @@
 						"x":{
 									"expression":"-cos((v/150)*t)*v",
 									"base":4.712,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":4.712,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							}
@@ -301,14 +301,14 @@
 						"x":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4
 								
 							},
 						"y":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4
 								
 							}
@@ -339,14 +339,14 @@
 						"x":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2
 								
 							},
 						"y":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2
 								
 							}
@@ -356,14 +356,14 @@
 						"x":{
 									"expression":"-cos((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4.712
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":4.712
 								
 							}
@@ -372,14 +372,14 @@
 						"x":{
 									"expression":"cos((v/150)*t)*v",
 									"base":4.712,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":4.712,
-									"increment":0.1,
+									"increment":0.05,
 									"target":9.42477
 								
 							}
@@ -388,14 +388,14 @@
 						"x":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":7
 								
 							},
 						"y":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":7
 								
 							}
@@ -424,14 +424,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							},
 						"y":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							}
@@ -456,14 +456,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							},
 						"y":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							}
@@ -487,14 +487,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							},
 						"y":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":13
 								
 							}
@@ -519,14 +519,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2.5
 								
 							},
 						"y":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":2.5
 								
 							}
@@ -535,14 +535,14 @@
 						"x":{
 									"expression":"cos((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":18.8495556
 								
 							},
 						"y":{
 									"expression":"sin((v/150)*t)*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":18.8495556
 								
 							}
@@ -571,14 +571,14 @@
 						"x":{
 									"expression":"0",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							},
 						"y":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":6
 								
 							}
@@ -587,14 +587,14 @@
 						"x":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							},
 						"y":{
 									"expression":"-0.5*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							}
@@ -603,14 +603,14 @@
 						"x":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							},
 						"y":{
 									"expression":"-0.5*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							}
@@ -619,14 +619,14 @@
 						"x":{
 									"expression":"v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							},
 						"y":{
 									"expression":"0.5*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							}
@@ -635,14 +635,14 @@
 						"x":{
 									"expression":"-v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							},
 						"y":{
 									"expression":"0.5*v",
 									"base":0,
-									"increment":0.1,
+									"increment":0.05,
 									"target":3.6
 								
 							}

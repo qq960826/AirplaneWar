@@ -21,9 +21,9 @@ void PlaneSelf::Onedgebottom() {
 
 void PlaneSelf::fire_trace(CObList *bullet, FlyingObject *target) {
 	if (mcooldown.fire_trace <= 0)return;
-	int num = mproperty->mbullet_set->num_each[1];
+	int num = mproperty.mbullet_set->num_each[1];
 	for (int i = 0; i < num; i++) {
-		BulletTrace  *mbullet = new BulletTrace(pos, mproperty->mbullet_set->bullet[1][i]);
+		BulletTrace  *mbullet = new BulletTrace(pos, mproperty.mbullet_set->bullet[1][i]);
 		mbullet->loadAnimation(pDoc->manimation_bullet);
 		mbullet->windowsize = pDoc->windowssize;
 		mbullet->settarget(target);
@@ -31,18 +31,18 @@ void PlaneSelf::fire_trace(CObList *bullet, FlyingObject *target) {
 	}
 };
 void PlaneSelf::fire_laser(CObList *bullet) {
-	mcooldown.fire_laser = 100;
+	//mcooldown.fire_laser = 100;
 	if (mcooldown.fire_laser <= 0)return;
-	if (cooldown_laser <= 100) {
-		cooldown_laser += 100;
+	if (cooldown_laser <= 200) {
+		cooldown_laser += 50;
 		return;
 	}
 	cooldown_laser = 0;
 
-	int num = mproperty->mbullet_set->num_each[2];
+	int num = mproperty.mbullet_set->num_each[2];
 	for (int i = 0; i < num; i++) {
 		BulletLaser  *mbullet = new BulletLaser();
-		mbullet->setproperty(mproperty->mbullet_set->bullet[2][i]);
+		mbullet->setproperty(mproperty.mbullet_set->bullet[2][i]);
 		mbullet->setgunman(this);
 		mbullet->loadAnimation(pDoc->manimation_bullet);
 		mbullet->windowsize = pDoc->windowssize;
@@ -51,21 +51,21 @@ void PlaneSelf::fire_laser(CObList *bullet) {
 };
 void PlaneSelf::calculate_cooldown() {
 	if (mcooldown.protection > 0) {
-		mcooldown.protection -= 100;
+		mcooldown.protection -= 50;
 	}
 	if (mcooldown.fire_trace > 0) {
-		mcooldown.fire_trace -= 100;
+		mcooldown.fire_trace -= 50;
 	}
 	if (mcooldown.fire_laser > 0) {
-		mcooldown.fire_laser -= 100;
+		mcooldown.fire_laser -= 50;
 	}
 };
 void PlaneSelf::getitem(Item item) {
 	switch (item.property.type) {
 	case 0://hp
 		hp += item.property.value;
-		if (hp > mproperty->hp) {
-			hp = mproperty->hp;
+		if (hp > mproperty.hp) {
+			hp = mproperty.hp;
 		}
 		break;
 	case 1://protection

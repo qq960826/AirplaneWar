@@ -8,7 +8,7 @@ public :
 	int exp;
 	int cooldown_fire[10] = {0};
 	int cooldown_collision;
-	plane_property *mproperty;
+	plane_property mproperty;
 	PlaneBase() :FlyingObject() {};
 	void Draw(CDC *);
 	void fire(CObList *bullet,int bulletid);

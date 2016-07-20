@@ -24,13 +24,12 @@ public:
 	
 
 	Equation() ;
-
-	bool isfinished() ;
 	void loadequation(move_equation_set a) ;
 	void setindex(int a);
 	void setvelociety(float a);
-	void calculate();
-	CPoint getresult();
 	void setoffset(CPoint *a);
+	CPoint getresult();
+	void calculate();
+	bool isfinished();
 
 };
